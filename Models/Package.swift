@@ -2,7 +2,7 @@
 
 import PackageDescription
 
-let packageName = "ColorsUI"
+let packageName = "Models"
 
 let package = Package(
   name: packageName,
@@ -13,15 +13,11 @@ let package = Package(
       targets: [packageName]
     ),
   ],
-  dependencies: [
-    .package(path: "../Models"),
-  ],
+  dependencies: [],
   targets: [
     .target(
       name: packageName,
-      dependencies: [
-        .byName(name: "Models"),
-      ],
+      dependencies: [],
       path: "Sources"
     )
   ]

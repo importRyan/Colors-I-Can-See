@@ -14,6 +14,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		94195B9128D76625007B047B /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Models; path = ../Models; sourceTree = "<group>"; };
+		94B5958D28D760AB0050E940 /* Clients */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Clients; path = ../Clients; sourceTree = "<group>"; };
 		94DC759A28D51DAD00F421B5 /* Colors I Can See.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Colors I Can See.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94DC759D28D51DAD00F421B5 /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		94DC75A128D51DAE00F421B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -38,8 +40,10 @@
 		94DC759128D51DAC00F421B5 = {
 			isa = PBXGroup;
 			children = (
-				94DC75AD28D5248A00F421B5 /* Features */,
+				94195B9128D76625007B047B /* Models */,
+				94B5958D28D760AB0050E940 /* Clients */,
 				94DC75AC28D5236A00F421B5 /* ColorsUI */,
+				94DC75AD28D5248A00F421B5 /* Features */,
 				94DC759C28D51DAD00F421B5 /* Colors I Can See */,
 				94DC759B28D51DAD00F421B5 /* Products */,
 				94DC75AE28D5256900F421B5 /* Frameworks */,
