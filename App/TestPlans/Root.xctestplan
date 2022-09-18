@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "2A95E76D-BCEB-42AE-A0DC-7DE8077D4202",
+      "name" : "Base",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Features",
+        "identifier" : "OnboardingTests",
+        "name" : "OnboardingTests"
+      }
+    }
+  ],
+  "version" : 1
+}
