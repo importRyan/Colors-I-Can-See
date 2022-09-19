@@ -30,44 +30,36 @@ public struct TrackableScrollView<T: View>: View {
       ScrollView(axes, showsIndicators: showsIndicators) {
         content
           .background(alignment: .topLeading) {
-            Measure<ScrollOffsetsKey>(
-              transform: measureTopLeading
-            )
+            Measure<ScrollOffsetsKey> { value, proxy in
+              value.topLeading = proxy.frame(in: .global).origin.y
+            }
           }
           .background(alignment: .bottomTrailing) {
-            Measure<ScrollOffsetsKey>(
-              transform: measureBottomTrailing
-            )
+            Measure<ScrollOffsetsKey> { value, proxy in
+              value._bottomTrailingRaw = proxy.frame(in: .global).origin.y
+            }
           }
       }
       .background {
-        Measure<ScrollOffsetsKey>(
-          transform: measureScrollView
-        )
+        Measure<ScrollOffsetsKey> { value, proxy in
+          value.scrollViewHeight = proxy.size.height
+          value.scrollViewMinY = proxy.frame(in: .global).minY
+        }
       }
     }
     .onPreferenceChange(ScrollOffsetsKey.self, perform: onScroll)
   }
-
-  private func measureTopLeading(value: inout ScrollOffsetsKey.Value, proxy: GeometryProxy) {
-    value.topLeading = proxy.frame(in: .global).origin.y
-  }
-
-  private func measureBottomTrailing(value: inout ScrollOffsetsKey.Value, proxy: GeometryProxy) {
-    value._bottomTrailingRaw = proxy.frame(in: .global).origin.y
-  }
-
-  private func measureScrollView(value: inout ScrollOffsetsKey.Value, proxy: GeometryProxy) {
-    value.scrollViewHeight = proxy.size.height
-    value.scrollViewMinY = proxy.frame(in: .global).minY
-  }
 }
 
-struct Measure<Key: PreferenceKey>: View {
+public struct Measure<Key: PreferenceKey>: View {
 
-  let transform: (_ value: inout Key.Value, _ proxy: GeometryProxy) -> Void
+  public init(_ transform: @escaping (_ value: inout Key.Value, _ geometry: GeometryProxy) -> Void) {
+    self.transform = transform
+  }
 
-  var body: some View {
+  private let transform: (_ value: inout Key.Value, _ proxy: GeometryProxy) -> Void
+
+  public var body: some View {
     GeometryReader { proxy in
       Color.clear
         .transformPreference(Key.self) { transform(&$0, proxy) }

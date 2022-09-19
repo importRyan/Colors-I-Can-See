@@ -9,7 +9,7 @@ struct CameraControlsView: View {
     ZStack(alignment: .topLeading) {
 
 
-
+      DemoAlignmentSwipeMenu()
 
       VStack(spacing: 20) {
         TriggerButton()
@@ -22,6 +22,58 @@ struct CameraControlsView: View {
     }
     .padding(.bottom, 50)
     .preferredColorScheme(.dark)
+  }
+}
+
+extension VerticalAlignment {
+  struct MenuAlignment: AlignmentID {
+    static func defaultValue(in context: ViewDimensions) -> CGFloat {
+      context[VerticalAlignment.center]
+    }
+  }
+  static let menuAlignment = VerticalAlignment(MenuAlignment.self)
+}
+
+struct DemoAlignmentSwipeMenu: View {
+
+  @State var selectedOption = 2
+  @State var offsets = [AnyHashable:CGFloat]()
+
+  var body: some View {
+    HStack {
+      ForEach(1..<6) {
+        button($0)
+      }
+    }
+    .coordinateSpace(name: "Menu")
+    .offset(x: offsets[selectedOption] ?? 0)
+//    .alignmentGuide(VerticalAlignment.center, computeValue: alignSelectedOption)
+    .onPreferenceChange(DictionaryKey.self) { offsets = $0 }
+    .animation(.easeIn, value: selectedOption)
+    .animation(.easeIn, value: offsets)
+    .frame(maxWidth: .infinity, alignment: .leading)
+  }
+
+  func button(_ number: Int) -> some View {
+    Button("\(number)") { selectedOption = number }
+      .foregroundColor(selectedOption == number ? .pink : .primary)
+      .background {
+        Measure<DictionaryKey> { value, geometry in
+          value[number] = geometry.frame(in: .named("Menu")).midX
+        }
+      }
+  }
+
+  func alignSelectedOption(_ viewDimensions: ViewDimensions) -> CGFloat {
+    viewDimensions[VerticalAlignment.center] + (offsets[selectedOption] ?? 0)
+  }
+}
+
+struct DictionaryKey: PreferenceKey {
+  static var defaultValue: [AnyHashable: CGFloat] = [:]
+
+  static func reduce(value: inout [AnyHashable: CGFloat], nextValue: () -> [AnyHashable: CGFloat]) {
+    value.merge(nextValue(), uniquingKeysWith: { $1 })
   }
 }
 
