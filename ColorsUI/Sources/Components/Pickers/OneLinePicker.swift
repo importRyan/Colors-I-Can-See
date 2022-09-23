@@ -2,18 +2,21 @@
 
 import SwiftUI
 
-public struct SingleLineBreadCrumbNavBar<T: Hashable & Identifiable>: View {
+public struct OneLinePicker<T: Hashable & Identifiable>: View {
 
   public init(
     cases: [T],
     label: KeyPath<T, String>,
-    selection: Binding<T>
+    selection: Binding<T>,
+    animation: Animation = .default
   ) {
+    self.animation = animation
     self.cases = cases
     self.label = label
     _selection = selection
   }
 
+  private let animation: Animation
   private let cases: [T]
   private let label: KeyPath<T, String>
   @Binding
@@ -23,7 +26,7 @@ public struct SingleLineBreadCrumbNavBar<T: Hashable & Identifiable>: View {
     HStack {
       ForEach(cases) { element in
         Button(element[keyPath: label]) {
-          withAnimation {
+          withAnimation(animation) {
             selection = element
           }
         }

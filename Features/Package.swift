@@ -14,6 +14,10 @@ let package = Package(
     .package(path: "../ColorsUI"),
     .package(path: "../Clients"),
     .package(path: "../Models"),
+    .package(
+      url: "https://github.com/pointfreeco/swift-composable-architecture",
+      branch: "protocol-beta"
+    )
   ],
   targets: [
     .target(name: "Root", dependencies: [
@@ -27,7 +31,7 @@ let package = Package(
       .product(name: "CameraClient", package: "Clients")
     ]),
     .target(name: "Onboarding", dependencies: [
-      "ColorsUI",
+      "ColorsUI"
     ]),
     .testTarget(name: "OnboardingTests", dependencies: [
       "Onboarding"

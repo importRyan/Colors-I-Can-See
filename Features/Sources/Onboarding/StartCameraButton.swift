@@ -7,37 +7,9 @@ struct StartCameraButton: View {
 
   var body: some View {
     ViewThatFits(in: .horizontal) {
-      Button(
-        action: action,
-        label: {
-          Text(Strings.cta)
-            .lineLimit(1)
-            .font(.title3.weight(.medium))
-            .padding(.vertical, 8)
-            .frame(maxWidth: .infinity)
-        }
-      )
-      .buttonStyle(.borderedProminent)
-
-      Button(
-        action: action,
-        label: {
-          Text(Strings.ctaLargeFont)
-            .lineLimit(1)
-            .font(.title3.weight(.medium))
-            .padding(.vertical, 8)
-            .frame(maxWidth: .infinity)
-        }
-      )
-      .buttonStyle(.borderedProminent)
+      LargeCTAButton(Strings.cta, action: action)
+      LargeCTAButton(Strings.ctaLargeFont, action: action)
     }
-  }
-
-  private var label: some View {
-    Text(Strings.cta)
-      .font(.title3.weight(.medium))
-      .padding(.vertical, 8)
-      .frame(maxWidth: .infinity)
   }
 }
 
@@ -53,3 +25,4 @@ struct Strings {
     comment: "Onboarding - Primary call to action button (regular font size)"
   )
 }
+

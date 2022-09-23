@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-public struct IfFits<Content: View>: View {
+public struct IfItFits<Content: View>: View {
   public init(
     in axis: Axis.Set,
     @ViewBuilder content: @escaping () -> Content

@@ -15,6 +15,17 @@ struct CameraControlsView: View {
         TriggerButton()
         SwipeMenu(simulation: $simulation)
 //        VisionMenu(simulation: $simulation)
+
+        VStack(alignment: .center) {
+          TextCarouselPicker(
+            selection: $simulation,
+            label: \.localizedInfo.shortName.localizedUppercase,
+            spacing: 15.0
+          )
+          .accentColor(.yellow)
+          .font(.caption.weight(.medium))
+          .fixedSize(horizontal: false, vertical: true)
+        }
       }
       .frame(maxWidth: .infinity, alignment: .center)
       .frame(maxHeight: .infinity, alignment: .bottom)
