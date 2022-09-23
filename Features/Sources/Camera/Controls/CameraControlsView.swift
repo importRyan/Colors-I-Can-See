@@ -127,7 +127,7 @@ struct SwipeMenu: View {
   }
 
   private func visionButton(_ vision: VisionType) -> some View {
-    Text(vision.localizedShortName)
+    Text(vision.localizedInfo.shortName)
       .fontWeight(gesturedSimulation == vision ? .semibold : .medium)
       .textCase(.uppercase)
       .id(vision)

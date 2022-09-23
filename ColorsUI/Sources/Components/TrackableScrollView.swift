@@ -51,23 +51,6 @@ public struct TrackableScrollView<T: View>: View {
   }
 }
 
-public struct Measure<Key: PreferenceKey>: View {
-
-  public init(_ transform: @escaping (_ value: inout Key.Value, _ geometry: GeometryProxy) -> Void) {
-    self.transform = transform
-  }
-
-  private let transform: (_ value: inout Key.Value, _ proxy: GeometryProxy) -> Void
-
-  public var body: some View {
-    GeometryReader { proxy in
-      Color.clear
-        .transformPreference(Key.self) { transform(&$0, proxy) }
-    }
-    .frame(width: 0, height: 0)
-  }
-}
-
 public struct ScrollOffsetsKey: PreferenceKey {
   public static var defaultValue: ScrollOffsets = .init()
   public static func reduce(value: inout ScrollOffsets, nextValue: () -> ScrollOffsets) {

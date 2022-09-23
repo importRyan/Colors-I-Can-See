@@ -19,7 +19,7 @@ struct VisionMenu: View {
             .lineLimit(1)
             .fixedSize(horizontal: true, vertical: true)
         } else {
-          Text(simulation.localizedShortName)
+          Text(simulation.localizedInfo.shortName)
             .foregroundColor(simulation.textColor)
             .lineLimit(1)
             .fixedSize(horizontal: true, vertical: true)
@@ -40,7 +40,7 @@ struct VisionPicker: View {
   var body: some View {
     Picker(selection: $simulation) {
       ForEach(VisionType.allCases) { vision in
-        Text(vision.localizedShortName)
+        Text(vision.localizedInfo.shortName)
           .tag(vision)
       }
     } label: {

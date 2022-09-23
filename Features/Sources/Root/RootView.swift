@@ -8,9 +8,9 @@ public struct RootView: View {
 
   public var body: some View {
     NavigationView {
-      CameraView()
-//      OnboardingView()
-//        .coordinateSpace(name: CoordinateSpace.rootScreen)
+//      CameraView()
+      OnboardingView()
+        .coordinateSpace(name: CoordinateSpace.rootScreen)
     }
   }
 }
