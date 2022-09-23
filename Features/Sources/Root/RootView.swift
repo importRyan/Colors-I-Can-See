@@ -8,8 +8,8 @@ public struct RootView: View {
 
   public var body: some View {
     NavigationView {
-//      CameraView()
-      OnboardingView()
+      Camera.Screen()
+//      Onboarding.Screen()
         .coordinateSpace(name: CoordinateSpace.rootScreen)
     }
   }
