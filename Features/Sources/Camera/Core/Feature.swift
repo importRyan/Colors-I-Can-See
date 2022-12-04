@@ -5,12 +5,21 @@ import Models
 
 public struct Camera: ReducerProtocol {
 
-  public struct State: Equatable {
-    @BindableState
-    var vision: VisionType = .deutan
+  public init() {
+    
   }
 
-  public enum Action: BindableAction {
+  public struct State: Equatable, Hashable, Identifiable {
+    public init(vision: VisionType) {
+      self.vision = vision
+    }
+
+    @BindableState
+    public var vision: VisionType
+    public var id: Self { self }
+  }
+
+  public enum Action: BindableAction, Equatable {
     case pressedCapturePhoto
     case binding(BindingAction<State>)
   }

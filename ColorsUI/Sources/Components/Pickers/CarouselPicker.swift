@@ -40,6 +40,8 @@ public struct CarouselPicker<
         .frame(maxWidth: .infinity, alignment: .top)
       }
   }
+
+
 }
 
 public struct FadedCarouselPicker<
@@ -82,6 +84,8 @@ public struct FadedCarouselPicker<
 
 // MARK: - Implementation
 
+fileprivate let neutralChange = 5.0
+
 fileprivate struct _CarouselPicker<
   E: CaseIterable & Hashable & Identifiable,
   Label: View
@@ -108,10 +112,15 @@ fileprivate struct _CarouselPicker<
 
   private let buildLabel: (E) -> Label
   private let elements: Array<E>
-  @Binding private var selectedElement: E
   private let spacing: CGFloat
+  @Binding
+  private var selectedElement: E
 
-  @State private var widths: OrderedDictionary<AnyHashable, CGFloat>
+  @State
+  private var widths: OrderedDictionary<AnyHashable, CGFloat>
+
+  @State
+  private var translation = 0.0
 
   public var body: some View {
     HStack(alignment: .center, spacing: spacing) {
@@ -119,7 +128,9 @@ fileprivate struct _CarouselPicker<
         buildLabel(element)
           .background {
             Measure<OrderedWidthsPreferenceKey> { value, geometry in
-              value[element] = geometry.size.width
+              if value[element] != geometry.size.width {
+                value[element] = geometry.size.width
+              }
             }
           }
       }
@@ -132,6 +143,9 @@ fileprivate struct _CarouselPicker<
         widths.merge(newValue) { $1 }
       }
     }
+    .contentShape(Rectangle())
+    .simultaneousGesture(swipeGesture())
+    .offset(x: translation)
   }
 
   private var alignedButtonsRowOffset: CGFloat {
@@ -141,6 +155,61 @@ fileprivate struct _CarouselPicker<
     let interButtonSpacing = spacing * CGFloat(selectedIndex)
     let centerOfCurrentSelection = widths.elements[selectedIndex].value / 2
     return buttonWidths + interButtonSpacing + centerOfCurrentSelection
+  }
+
+  private func swipeGesture() -> _EndedGesture<_ChangedGesture<DragGesture>> {
+    DragGesture(minimumDistance: 5)
+      .onChanged { value in
+        var proposedTranslation = value.translation.width
+
+        if let priorLimit = prior?.value {
+          proposedTranslation = max(-priorLimit, translation)
+        }
+        if let nextLimit = next?.value {
+          proposedTranslation = min(nextLimit, translation)
+        }
+        print(value.translation.width, -(prior?.value ?? 0), next?.value, translation)
+        withAnimation {
+          translation = proposedTranslation
+        }
+      }
+      .onEnded { value in
+        switch value.translation.width {
+        case ...(neutralChange):
+          print(value.translation.width, "-> Next", next?.key)
+          if let nextElement = next?.key {
+            withAnimation {
+              selectedElement = nextElement
+            }
+          }
+        case neutralChange...:
+          if let priorElement = prior?.key {
+            withAnimation {
+              selectedElement = priorElement
+            }
+            print(value.translation.width, "-> Prior", prior?.key)
+          }
+        default:
+          print("Neutral", value.translation.width)
+          return
+        }
+      }
+  }
+
+  private var prior: (key: E, value: CGFloat)? {
+    guard let selectedIndex = widths.index(forKey: selectedElement),
+          selectedIndex > widths.elements.startIndex
+    else { return nil }
+    let priorIndex = widths.elements.index(before: selectedIndex)
+    return widths.elements[priorIndex] as? (E, CGFloat)
+  }
+
+  private var next: (key: E, value: CGFloat)? {
+    guard let selectedIndex = widths.index(forKey: selectedElement),
+          selectedIndex < (widths.elements.endIndex - 1)
+    else { return nil }
+    let nextIndex = widths.elements.index(after: selectedIndex)
+    return widths.elements[nextIndex] as? (E, CGFloat)
   }
 }
 

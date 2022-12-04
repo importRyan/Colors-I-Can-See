@@ -8,18 +8,24 @@ public struct TextCarouselPicker<
 
   public init(
     selection: Binding<E>,
+    onSwipeLeft: @escaping () -> Void,
+    onSwipeRight: @escaping () -> Void,
     elements: [E] = E.allCases.map { $0 },
     label: KeyPath<E, String>,
     spacing: CGFloat
   ) {
     self.elements = elements
     self.label = label
+    self.onSwipeLeft = onSwipeLeft
+    self.onSwipeRight = onSwipeRight
     _selection = selection
     self.spacing = spacing
   }
 
   private let elements: [E]
   private let label: KeyPath<E, String>
+  private let onSwipeLeft: () -> Void
+  private let onSwipeRight: () -> Void
   @Binding private var selection: E
   private let spacing: CGFloat
 

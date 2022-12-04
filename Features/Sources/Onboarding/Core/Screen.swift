@@ -8,8 +8,8 @@ extension Onboarding {
 
   public struct Screen: View {
 
-    public init() {
-      self.store = .init(initialState: .init(), reducer: Onboarding.init())
+    public init(store: StoreOf<Onboarding>) {
+      self.store = store
     }
 
     private let store: StoreOf<Onboarding>
@@ -56,7 +56,12 @@ extension Onboarding {
 struct OnboardingScreen_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      Onboarding.Screen()
+      Onboarding.Screen(
+        store: .init(
+          initialState: .init(),
+          reducer: Onboarding()
+        )
+      )
     }
   }
 }

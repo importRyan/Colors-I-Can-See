@@ -5,9 +5,16 @@ import SwiftUI
 
 @main
 struct iOSApp: App {
+  @UIApplicationDelegateAdaptor(iOSAppDelegate.self) private var appDelegate
   var body: some Scene {
     WindowGroup {
-      RootView()
+      RootView(
+        store: appDelegate.store
+      )
     }
   }
+}
+
+class iOSAppDelegate: NSObject, UIApplicationDelegate {
+  fileprivate let store = RootStore()
 }

@@ -3,7 +3,7 @@
 import Foundation
 import SwiftUI
 
-public enum VisionType: Int, CaseIterable {
+public enum VisionType: CaseIterable {
   case typical, deutan, protan, tritan, monochromat
 
   public static let allColorBlindCases: [Self] = [
@@ -16,20 +16,36 @@ extension VisionType: Identifiable {
 }
 
 extension VisionType {
+  init?(rank: Int) {
+    if let known = Self.allColorBlindCases.first(where: { $0.rank == rank }) {
+      self = known
+    } else {
+      return nil
+    }
+  }
+
   public var rank: Int {
-    self.rawValue
+    switch self {
+    case .typical: return 0
+    case .deutan: return 1
+    case .protan: return 2
+    case .tritan: return 3
+    case .monochromat: return 4
+    }
   }
   public func nextMoreCommonVision() -> Self {
-    Self(rawValue: self.rawValue - 1) ?? .typical
+    Self(rank: self.rank - 1) ?? .typical
   }
   public func nextLessCommonVision() -> Self {
-    Self(rawValue: self.rawValue + 1) ?? .monochromat
+    Self(rank: self.rank + 1) ?? .monochromat
   }
+  @discardableResult
   public mutating func moreCommon() -> Self {
-    Self(rawValue: self.rawValue - 1) ?? .typical
+    Self(rank: self.rank - 1) ?? .typical
   }
+  @discardableResult
   public mutating func lessCommon() -> Self {
-    Self(rawValue: self.rawValue + 1) ?? .monochromat
+    Self(rank: self.rank + 1) ?? .monochromat
   }
 }
 

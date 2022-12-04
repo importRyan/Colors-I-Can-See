@@ -16,7 +16,11 @@ let package = Package(
     .package(path: "../Models"),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture",
-      branch: "protocol-beta"
+      from: .init(0, 47, 2)
+    ),
+    .package(
+      url: "https://github.com/johnpatrickmorgan/TCACoordinators",
+      from: .init(0, 3, 0)
     ),
   ],
   targets: [
@@ -24,9 +28,12 @@ let package = Package(
       .Internal.ColorsUI,
       "Camera",
       "Onboarding",
+      .External.ComposableArchitecture,
+      .External.TCACoordinators,
     ]),
     .target(name: "Camera", dependencies: [
       .Clients.Camera,
+      .External.ComposableArchitecture,
       .Internal.ColorsUI,
       .Internal.Models,
     ]),
@@ -64,6 +71,11 @@ extension Target.Dependency {
       .product(
         name: "ComposableArchitecture",
         package: "swift-composable-architecture"
+      )
+    static let TCACoordinators = Target.Dependency
+      .product(
+        name: "TCACoordinators",
+        package: "TCACoordinators"
       )
   }
 }

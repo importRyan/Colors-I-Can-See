@@ -5,12 +5,22 @@ import Models
 
 public struct Onboarding: ReducerProtocol {
 
-  public struct State: Equatable {
-    @BindableState
-    var vision: VisionType = .deutan
+  public init() {
+    
   }
 
-  public enum Action: BindableAction {
+  public struct State: Equatable, Hashable, Identifiable {
+    public init(vision: VisionType = .deutan) {
+      self.vision = vision
+    }
+
+
+    @BindableState
+    var vision: VisionType = .deutan
+    public var id: Self { self }
+  }
+
+  public enum Action: BindableAction, Equatable {
     case pressedStartCamera
     case advanceToCamera(VisionType)
     case binding(BindingAction<State>)

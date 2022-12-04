@@ -8,8 +8,8 @@ extension Camera {
 
   public struct Screen: View {
 
-    public init() {
-      self.store = .init(initialState: .init(), reducer: Camera.init())
+    public init(store: Store<State, Action>) {
+      self.store = store
     }
 
     private let store: StoreOf<Camera>
@@ -21,7 +21,6 @@ extension Camera {
           CameraControlsView(
             simulation: viewStore.binding(\.$vision)
           )
-          .animation(.easeOut, value: viewStore.vision)
         }
       }
     }
@@ -32,7 +31,12 @@ extension Camera {
 struct CameraScreen_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      Camera.Screen()
+      Camera.Screen(
+        store: .init(
+          initialState: .init(vision: .deutan),
+          reducer: Camera()
+        )
+      )
     }
   }
 }

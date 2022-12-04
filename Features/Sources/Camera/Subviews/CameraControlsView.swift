@@ -10,11 +10,13 @@ struct CameraControlsView: View {
     ZStack(alignment: .topLeading) {
       VStack(spacing: 20) {
         TriggerButton()
-        SwipeMenu(simulation: $simulation)
+//        SwipeMenu(simulation: $simulation)
 
         VStack(alignment: .center) {
           TextCarouselPicker(
             selection: $simulation,
+            onSwipeLeft: { $simulation.wrappedValue.moreCommon() },
+            onSwipeRight: { $simulation.wrappedValue.lessCommon() },
             label: \.localizedInfo.shortName.localizedUppercase,
             spacing: 15.0
           )
