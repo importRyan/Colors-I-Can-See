@@ -9,14 +9,13 @@ public struct Camera: ReducerProtocol {
     
   }
 
-  public struct State: Equatable, Hashable, Identifiable {
+  public struct State: Equatable, Hashable {
     public init(vision: VisionType) {
       self.vision = vision
     }
 
     @BindableState
     public var vision: VisionType
-    public var id: Self { self }
   }
 
   public enum Action: BindableAction, Equatable {

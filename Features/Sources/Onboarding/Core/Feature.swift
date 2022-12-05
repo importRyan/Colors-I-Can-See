@@ -9,15 +9,12 @@ public struct Onboarding: ReducerProtocol {
     
   }
 
-  public struct State: Equatable, Hashable, Identifiable {
+  public struct State: Equatable, Hashable {
     public init(vision: VisionType = .deutan) {
       self.vision = vision
     }
-
-
     @BindableState
     var vision: VisionType = .deutan
-    public var id: Self { self }
   }
 
   public enum Action: BindableAction, Equatable {

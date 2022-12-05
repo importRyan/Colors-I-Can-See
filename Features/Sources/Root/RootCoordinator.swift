@@ -1,81 +1,96 @@
 import ColorsUI
 import Camera
 import ComposableArchitecture
+import Models
 import Onboarding
 import TCACoordinators
 
-struct SomeCoordinator: ReducerProtocol {
+public struct Root: ReducerProtocol {
 
-  public struct State: Equatable, IdentifiedRouterState {
-    public var routes: IdentifiedArrayOf<Route<Screen.State>>
+  public init() {}
 
-    public static let initialState = Self.init(
-      routes: [
-        .root(
-          .onboarding(.init()), embedInNavigationView: true
-        )
-      ]
-    )
+  public enum State: Equatable, Hashable {
+    case camera(Camera.State)
+    case initialization
+    case onboarding(Onboarding.State)
   }
 
-  enum Action: IdentifiedRouterAction {
-    case routeAction(Screen.State.ID, action: Screen.Action)
-    case updateRoutes(IdentifiedArrayOf<Route<Screen.State>>)
+  public enum Action: Equatable {
+    case camera(Camera.Action)
+    case initialization(Initialization.Action)
+    case onboarding(Onboarding.Action)
   }
 
   public var body: some ReducerProtocol<State, Action> {
-    Reduce { state, action in
-      switch action {
-      case let .routeAction(_, action: .onboarding(.advanceToCamera(vision))):
-        state.routes.push(.camera(.init(vision: vision)))
-        return .none
-      default:
-        return .none
-      }
-    }
-    .forEachRoute { Screen() }
+    screens
+    coordinator
   }
 
-  struct Screen: ReducerProtocol {
+  @ReducerBuilder<State, Action>
+  private var coordinator: some ReducerProtocol<State, Action> {
+    Reduce { state, action in
+      switch action {
 
-    enum State: Equatable, Hashable, Identifiable {
-      var id: Self { self }
-      case onboarding(Onboarding.State)
-      case camera(Camera.State)
-    }
+      case .initialization(.complete):
+        state = .onboarding(.init())
+        return .none
 
-    enum Action: Equatable {
-      case onboarding(Onboarding.Action)
-      case camera(Camera.Action)
-    }
+      case let .onboarding(.advanceToCamera(vision)):
+        state = .camera(.init(vision: vision))
+        return .none
 
-    var body: some ReducerProtocol<State, Action> {
-      Scope(state: /State.onboarding, action: /Action.onboarding) {
-        Onboarding()
-      }
-      Scope(state: /State.camera, action: /Action.camera) {
-        Camera()
+      case .camera, .initialization, .onboarding:
+        return .none
       }
     }
+  }
 
-    struct Builder: View {
-      private let store: StoreOf<SomeCoordinator>
+  // MARK: - Glue
 
-      public var body: some View {
-        TCARouter(store) { scopedStore in
-          SwitchStore(scopedStore) {
-            CaseLet(
-              state: /Screen.State.onboarding,
-              action: Screen.Action.onboarding,
-              then: Onboarding.Screen.init
-            )
-            CaseLet(
-              state: /Screen.State.camera,
-              action: Screen.Action.camera,
-              then: Camera.Screen.init
-            )
-          }
-        }
+  @ReducerBuilder<State, Action>
+  private var screens: some ReducerProtocol<State, Action> {
+    Scope(
+      state: /State.camera,
+      action: /Action.camera,
+      Camera.init
+    )
+    Scope(
+      state: /State.initialization,
+      action: /Action.initialization,
+      Initialization.init
+    )
+    Scope(
+      state: /State.onboarding,
+      action: /Action.onboarding,
+      Onboarding.init
+    )
+  }
+
+  public struct Screen: View {
+
+    public init(store: StoreOf<Root>) {
+      self.store = store
+    }
+
+    private let store: StoreOf<Root>
+
+    public var body: some View {
+      SwitchStore(store) {
+        CaseLet(
+          state: /State.camera,
+          action: Action.camera,
+          then: Camera.Screen.init
+        )
+        CaseLet(
+          state: /State.initialization,
+          action: Action.initialization,
+          then: Initialization.Screen.init
+        )
+        CaseLet(
+          state: /State.onboarding,
+          action: Action.onboarding,
+          then: Onboarding.Screen.init
+        )
       }
     }
   }
