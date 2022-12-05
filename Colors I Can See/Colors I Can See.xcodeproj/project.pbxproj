@@ -16,6 +16,7 @@
 
 /* Begin PBXFileReference section */
 		940F2451293EAE2900B40C74 /* AppDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegates.swift; sourceTree = "<group>"; };
+		940F2453293EB0C300B40C74 /* Root.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Root.xctestplan; path = TestPlans/Root.xctestplan; sourceTree = "<group>"; };
 		94195B9128D76625007B047B /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Models; path = ../Models; sourceTree = "<group>"; };
 		9451581F293E5D7D005B9D44 /* Colors-I-Can-See-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Colors-I-Can-See-Info.plist"; sourceTree = SOURCE_ROOT; };
 		94B5958D28D760AB0050E940 /* Clients */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Clients; path = ../Clients; sourceTree = "<group>"; };
@@ -43,6 +44,7 @@
 		94DC759128D51DAC00F421B5 = {
 			isa = PBXGroup;
 			children = (
+				940F2453293EB0C300B40C74 /* Root.xctestplan */,
 				94195B9128D76625007B047B /* Models */,
 				94B5958D28D760AB0050E940 /* Clients */,
 				94DC75AC28D5236A00F421B5 /* ColorsUI */,
