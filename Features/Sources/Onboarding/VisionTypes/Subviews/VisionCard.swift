@@ -77,41 +77,6 @@ fileprivate struct Details: View {
   }
 }
 
-fileprivate struct HueSimulation: View {
-
-  @Binding var hideSimulation: Bool
-  let vision: VisionType
-
-  var body: some View {
-    simulatedVisionGradient
-      .overlay {
-        if hideSimulation {
-          typicalVisionGradient
-            .transition(.opacity)
-        }
-      }
-      .drawingGroup(opaque: true, colorMode: .extendedLinear)
-  }
-
-  private var simulatedVisionGradient: AngularGradient {
-    AngularGradient(
-      gradient: Gradient.rainbow(in: vision),
-      center: .center,
-      startAngle: .degrees(-90),
-      endAngle: .degrees(360 - 90)
-    )
-  }
-
-  private var typicalVisionGradient: AngularGradient {
-    AngularGradient(
-      gradient: .rainbow(in: .typical),
-      center: .center,
-      startAngle: .degrees(-90),
-      endAngle: .degrees(360 - 90)
-    )
-  }
-}
-
 fileprivate struct ToolbarRow: View {
 
   @Binding var hideSimulation: Bool

@@ -4,20 +4,19 @@ import ColorsUI
 import ComposableArchitecture
 import Models
 
-extension Onboarding {
+extension VisionTypes {
 
   public struct Screen: View {
 
-    public init(store: StoreOf<Onboarding>) {
+    public init(store: StoreOf<VisionTypes>) {
       self.store = store
     }
 
-    private let store: StoreOf<Onboarding>
+    private let store: StoreOf<VisionTypes>
     private let explicitSelectionAnimation = Animation.spring()
 
     public var body: some View {
       WithViewStore(store) { viewStore in
-
         VStack(alignment: .leading, spacing: 15) {
           Text("Color blindness types")
             .font(.title2.weight(.bold))
@@ -53,13 +52,13 @@ extension Onboarding {
 }
 
 #if DEBUG
-struct OnboardingScreen_Previews: PreviewProvider {
+struct VisionTypesScreen_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      Onboarding.Screen(
+      VisionTypes.Screen(
         store: .init(
           initialState: .init(),
-          reducer: Onboarding()
+          reducer: VisionTypes()
         )
       )
     }

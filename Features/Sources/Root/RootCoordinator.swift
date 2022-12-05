@@ -1,5 +1,5 @@
+import CameraFlow
 import ColorsUI
-import Camera
 import ComposableArchitecture
 import Models
 import Onboarding
@@ -9,15 +9,15 @@ public struct Root: ReducerProtocol {
   public init() {}
 
   public enum State: Equatable, Hashable {
-    case camera(Camera.State)
+    case camera(CameraFlow.Coordinator.State)
     case initialization
-    case onboarding(Onboarding.State)
+    case onboarding(OnboardingFlow.Coordinator.State)
   }
 
   public enum Action: Equatable {
-    case camera(Camera.Action)
+    case camera(CameraFlow.Coordinator.Action)
     case initialization(Initialization.Action)
-    case onboarding(Onboarding.Action)
+    case onboarding(OnboardingFlow.Coordinator.Action)
   }
 
   public var body: some ReducerProtocol<State, Action> {
@@ -31,11 +31,13 @@ public struct Root: ReducerProtocol {
       switch action {
 
       case .initialization(.complete):
-        state = .onboarding(.init())
+        state = .onboarding(.initialState())
         return .none
 
-      case let .onboarding(.advanceToCamera(vision)):
-        state = .camera(.init(vision: vision))
+      case let .onboarding(.send(.advanceToCamera(vision))):
+        state = .camera(
+          .initialState(settings: .init(vision: vision))
+        )
         return .none
 
       case .camera, .initialization, .onboarding:
@@ -51,7 +53,7 @@ public struct Root: ReducerProtocol {
     Scope(
       state: /State.camera,
       action: /Action.camera,
-      Camera.init
+      CameraFlow.Coordinator.init
     )
     Scope(
       state: /State.initialization,
@@ -61,7 +63,7 @@ public struct Root: ReducerProtocol {
     Scope(
       state: /State.onboarding,
       action: /Action.onboarding,
-      Onboarding.init
+      OnboardingFlow.Coordinator.init
     )
   }
 
@@ -78,7 +80,7 @@ public struct Root: ReducerProtocol {
         CaseLet(
           state: /State.camera,
           action: Action.camera,
-          then: Camera.Screen.init
+          then: CameraFlow.init
         )
         CaseLet(
           state: /State.initialization,
@@ -88,7 +90,7 @@ public struct Root: ReducerProtocol {
         CaseLet(
           state: /State.onboarding,
           action: Action.onboarding,
-          then: Onboarding.Screen.init
+          then: OnboardingFlow.init
         )
       }
     }

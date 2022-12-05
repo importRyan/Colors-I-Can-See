@@ -3,7 +3,7 @@
 import ComposableArchitecture
 import Models
 
-public struct Onboarding: ReducerProtocol {
+public struct VisionTypes: ReducerProtocol {
 
   public init() {
     
@@ -19,8 +19,12 @@ public struct Onboarding: ReducerProtocol {
 
   public enum Action: BindableAction, Equatable {
     case pressedStartCamera
-    case advanceToCamera(VisionType)
     case binding(BindingAction<State>)
+    case send(SendAction)
+
+    public enum SendAction: Equatable {
+      case advanceToCamera(VisionType)
+    }
   }
 
   public var body: some ReducerProtocol<State, Action> {
@@ -28,10 +32,11 @@ public struct Onboarding: ReducerProtocol {
     Reduce { state, action in
       switch action {
       case .pressedStartCamera:
-        return Effect(value: .advanceToCamera(state.vision))
-      case .advanceToCamera:
-        return .none
+        return Effect(value: .send(.advanceToCamera(state.vision)))
+          .animation(.easeIn(duration: 5))
       case .binding:
+        return .none
+      case .send:
         return .none
       }
     }

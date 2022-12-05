@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9451581C293DBEDF005B9D44 /* CameraCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = 9451581B293DBEDF005B9D44 /* CameraCoordinator */; };
+		9451581E293E5C29005B9D44 /* Root in Frameworks */ = {isa = PBXBuildFile; productRef = 9451581D293E5C29005B9D44 /* Root */; };
 		94DC759E28D51DAD00F421B5 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DC759D28D51DAD00F421B5 /* iOSApp.swift */; };
 		94DC75A228D51DAE00F421B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94DC75A128D51DAE00F421B5 /* Assets.xcassets */; };
 		94DC75A628D51DAE00F421B5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94DC75A528D51DAE00F421B5 /* Preview Assets.xcassets */; };
@@ -15,6 +15,7 @@
 
 /* Begin PBXFileReference section */
 		94195B9128D76625007B047B /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Models; path = ../Models; sourceTree = "<group>"; };
+		9451581F293E5D7D005B9D44 /* Colors-I-Can-See-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Colors-I-Can-See-Info.plist"; sourceTree = SOURCE_ROOT; };
 		94B5958D28D760AB0050E940 /* Clients */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Clients; path = ../Clients; sourceTree = "<group>"; };
 		94DC759A28D51DAD00F421B5 /* Colors I Can See.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Colors I Can See.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94DC759D28D51DAD00F421B5 /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
@@ -30,7 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9451581C293DBEDF005B9D44 /* CameraCoordinator in Frameworks */,
+				9451581E293E5C29005B9D44 /* Root in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +62,7 @@
 		94DC759C28D51DAD00F421B5 /* Colors I Can See */ = {
 			isa = PBXGroup;
 			children = (
+				9451581F293E5D7D005B9D44 /* Colors-I-Can-See-Info.plist */,
 				94DC759D28D51DAD00F421B5 /* iOSApp.swift */,
 				94DC75A128D51DAE00F421B5 /* Assets.xcassets */,
 				94DC75A328D51DAE00F421B5 /* Colors_I_Can_See.entitlements */,
@@ -101,7 +103,7 @@
 			);
 			name = "Colors I Can See";
 			packageProductDependencies = (
-				9451581B293DBEDF005B9D44 /* CameraCoordinator */,
+				9451581D293E5C29005B9D44 /* Root */,
 			);
 			productName = "Colors I Can See";
 			productReference = 94DC759A28D51DAD00F421B5 /* Colors I Can See.app */;
@@ -288,6 +290,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Colors-I-Can-See-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -327,6 +330,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Colors-I-Can-See-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -377,9 +381,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9451581B293DBEDF005B9D44 /* CameraCoordinator */ = {
+		9451581D293E5C29005B9D44 /* Root */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = CameraCoordinator;
+			productName = Root;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
