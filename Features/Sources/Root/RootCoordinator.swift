@@ -3,7 +3,6 @@ import Camera
 import ComposableArchitecture
 import Models
 import Onboarding
-import TCACoordinators
 
 public struct Root: ReducerProtocol {
 

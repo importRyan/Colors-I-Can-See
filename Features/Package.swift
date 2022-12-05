@@ -9,6 +9,7 @@ let package = Package(
     .library(name: "Root", targets: ["Root"]),
     .library(name: "Camera", targets: ["Camera"]),
     .library(name: "Onboarding", targets: ["Onboarding"]),
+    .library(name: "CameraCoordinator", targets: ["CameraCoordinator"]),
   ],
   dependencies: [
     .package(path: "../ColorsUI"),
@@ -25,6 +26,13 @@ let package = Package(
   ],
   targets: [
     .target(name: "Root", dependencies: [
+      .Internal.ColorsUI,
+      "Camera",
+      "Onboarding",
+      .External.ComposableArchitecture,
+      .External.TCACoordinators,
+    ]),
+    .target(name: "CameraCoordinator", dependencies: [
       .Internal.ColorsUI,
       "Camera",
       "Onboarding",

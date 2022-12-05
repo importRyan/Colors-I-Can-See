@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9451581C293DBEDF005B9D44 /* CameraCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = 9451581B293DBEDF005B9D44 /* CameraCoordinator */; };
 		94DC759E28D51DAD00F421B5 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DC759D28D51DAD00F421B5 /* iOSApp.swift */; };
 		94DC75A228D51DAE00F421B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94DC75A128D51DAE00F421B5 /* Assets.xcassets */; };
 		94DC75A628D51DAE00F421B5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94DC75A528D51DAE00F421B5 /* Preview Assets.xcassets */; };
-		94DC75B028D5256900F421B5 /* Root in Frameworks */ = {isa = PBXBuildFile; productRef = 94DC75AF28D5256900F421B5 /* Root */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94DC75B028D5256900F421B5 /* Root in Frameworks */,
+				9451581C293DBEDF005B9D44 /* CameraCoordinator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +101,7 @@
 			);
 			name = "Colors I Can See";
 			packageProductDependencies = (
-				94DC75AF28D5256900F421B5 /* Root */,
+				9451581B293DBEDF005B9D44 /* CameraCoordinator */,
 			);
 			productName = "Colors I Can See";
 			productReference = 94DC759A28D51DAD00F421B5 /* Colors I Can See.app */;
@@ -377,9 +377,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		94DC75AF28D5256900F421B5 /* Root */ = {
+		9451581B293DBEDF005B9D44 /* CameraCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Root;
+			productName = CameraCoordinator;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
