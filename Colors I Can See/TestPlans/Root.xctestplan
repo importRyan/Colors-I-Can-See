@@ -23,7 +23,7 @@
     {
       "parallelizable" : true,
       "target" : {
-        "containerPath" : "container:",
+        "containerPath" : "container:..\/Features",
         "identifier" : "OnboardingTests",
         "name" : "OnboardingTests"
       }
