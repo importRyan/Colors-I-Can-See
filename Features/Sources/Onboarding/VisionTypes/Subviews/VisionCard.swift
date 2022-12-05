@@ -42,7 +42,7 @@ struct VisionCard: View {
       }
       .scenePadding()
     }
-    .background(Color(uiColor: .systemBackground))
+    .background(Color.app.systemBackground)
     .clipShape(clipShape)
     .compositingGroup()
   }

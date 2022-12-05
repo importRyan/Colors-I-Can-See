@@ -83,7 +83,7 @@ public struct OnboardingFlow: View {
           action: RouteAction.visionTypes,
           then: {
             VisionTypes.Screen(store: $0)
-              .toolbar(.hidden, for: .navigationBar)
+              .toolbar(.hidden, for: .automatic)
           }
         )
       }
