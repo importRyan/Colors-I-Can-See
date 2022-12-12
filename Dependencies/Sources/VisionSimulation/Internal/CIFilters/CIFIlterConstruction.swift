@@ -46,7 +46,9 @@ class MachadoFilterVendor: NSObject, CIFilterConstructor {
     case .typical: return nil
 
     case .monochromat:
-      return MonochromatFilter()
+      return MonochromatFilter(
+        multiplier: .init(x: 0.2126, y: 0.7152, z: 0.0722)
+      )
 
     case .deutan:
       matrix = [

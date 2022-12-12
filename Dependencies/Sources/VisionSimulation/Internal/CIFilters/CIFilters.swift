@@ -56,10 +56,11 @@ class MachadoFilter: CIFilter {
 class MonochromatFilter: CIFilter {
 
   @objc dynamic var inputImage: CIImage?
-  @objc dynamic let multiplierHalf3: CIVector = .init(x: 0.2126, y: 0.7152, z: 0.0722)
+  @objc dynamic let multiplierHalf3: CIVector
 
-  convenience override init() {
-    self.init()
+  init(multiplier: CIVector) {
+    self.multiplierHalf3 = multiplier
+    super.init()
   }
 
   required init?(coder: NSCoder) { fatalError() }
