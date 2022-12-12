@@ -11,7 +11,7 @@ extension VisionSimulationClient {
       try await setupMetalOnSpecificQueue(with: initialSimulation)
     },
     changeSimulation: { newSimulation in
-      return
+      MetalController.live?.vision.send(newSimulation)
     }
   )
 }

@@ -39,6 +39,9 @@ let package = Package(
       .Internal.ColorsUI,
       .Internal.Models,
     ]),
+    .testTarget(name: "CameraTests", dependencies: [
+      "Camera"
+    ]),
     .target(
       name: "Onboarding",
       dependencies: [

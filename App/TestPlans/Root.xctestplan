@@ -19,6 +19,14 @@
         "identifier" : "OnboardingTests",
         "name" : "OnboardingTests"
       }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Features",
+        "identifier" : "CameraTests",
+        "name" : "CameraTests"
+      }
     }
   ],
   "version" : 1

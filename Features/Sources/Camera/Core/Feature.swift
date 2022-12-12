@@ -32,6 +32,10 @@ public struct Camera: ReducerProtocol {
       switch action {
       case .pressedCapturePhoto:
         return .none
+      case .binding(\.$vision):
+        return .run { [vision = state.vision] _ in
+          await visionSimulation.changeSimulation(vision)
+        }
       case .binding:
         return .none
       }
