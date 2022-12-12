@@ -15,7 +15,7 @@ struct MonochromacyApproximationTransforms {
   static let generalized: Simulation = { input, _ -> RGBVector in
     let linear = input.decodeGammaSRGB()
     let xyz_linearRGB_Y = simd_float3(0.2126, 0.7152, 0.0722)
-    let xyz_y = simd_dot(xyz_linearRGB_Y, linear).encodeGammaSRGB()
-    return .init(repeating: xyz_y)
+    let xyz_y = simd_dot(xyz_linearRGB_Y, linear)
+    return .init(repeating: xyz_y.srgbEncoded)
   }
 }
