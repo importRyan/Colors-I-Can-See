@@ -2,6 +2,8 @@
 
 import CoreImage
 
+// MARK: - Dichromat
+
 class MachadoFilter: CIFilter {
 
   @objc dynamic var inputImage: CIImage?
@@ -16,9 +18,9 @@ class MachadoFilter: CIFilter {
 
   private lazy var kernel =  {
     do {
-      return try CIColorKernel(functionName: "monochrome")
+      return try CIColorKernel(functionName: "rgbMatrix")
     } catch {
-      #warning("TODO: Check compilation settings for metallib. Error: This library format is not supported on this platform (or was built with an old version of the tools)")
+      #warning("TODO: Change build settings for cross-platform metallib compilation.")
       fatalError(error.localizedDescription)
     }
   }()
@@ -48,6 +50,8 @@ class MachadoFilter: CIFilter {
     )
   }
 }
+
+// MARK: - Monochromat
 
 class MonochromatFilter: CIFilter {
 
@@ -112,11 +116,6 @@ fileprivate func inputImageAttributes() -> [String: Any] {
 
 extension CIColorKernel {
   convenience init(functionName: String) throws {
-    #if DEBUG
-    let device = MTLCreateSystemDefaultDevice()!
-    let library = try device.makeLibrary(URL: .machadoFilters)
-    print(library.functionNames)
-    #endif
     let data = try Data(contentsOf: .machadoFilters)
     try self.init(
       functionName: functionName,
