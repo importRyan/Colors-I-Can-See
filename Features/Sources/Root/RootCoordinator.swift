@@ -53,11 +53,6 @@ public struct Root: ReducerProtocol {
   @ReducerBuilder<State, Action>
   private var screens: some ReducerProtocol<State, Action> {
     Scope(
-      state: /State.camera,
-      action: /Action.camera,
-      CameraFlow.Coordinator.init
-    )
-    Scope(
       state: /State.initialization,
       action: /Action.initialization,
       Initialization.init
@@ -66,6 +61,11 @@ public struct Root: ReducerProtocol {
       state: /State.onboarding,
       action: /Action.onboarding,
       OnboardingFlow.Coordinator.init
+    )
+    Scope(
+      state: /State.camera,
+      action: /Action.camera,
+      CameraFlow.Coordinator.init
     )
   }
 

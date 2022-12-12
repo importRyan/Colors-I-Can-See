@@ -11,7 +11,7 @@ extension OnboardingFlow {
     public init() {}
 
     public var body: some ReducerProtocol<State, Action> {
-      return Reduce<State, Action> { state, action in
+      Reduce<State, Action> { state, action in
         switch action {
 
         case .routeAction(_, action: .splash(.send(.next))):
@@ -29,11 +29,11 @@ extension OnboardingFlow {
         return .none
       }
       .forEachRoute {
-        Scope(state: /RouteState.visionTypes, action: /RouteAction.visionTypes) {
-          VisionTypes()
-        }
         Scope(state: /RouteState.splash, action: /RouteAction.splash) {
           Splash()
+        }
+        Scope(state: /RouteState.visionTypes, action: /RouteAction.visionTypes) {
+          VisionTypes()
         }
       }
     }

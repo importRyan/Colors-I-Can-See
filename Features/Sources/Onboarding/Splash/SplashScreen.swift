@@ -59,7 +59,9 @@ extension Splash {
           .scenePadding([.horizontal, .bottom])
         }
         .onAppear {
-          viewStore.send(.onAppear)
+          if !viewStore.didAppear {
+            viewStore.send(.onAppear)
+          }
         }
       }
     }
