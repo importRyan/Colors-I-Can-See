@@ -17,10 +17,6 @@ let package = Package(
     .package(path: "../ColorVision"),
     .package(path: "../Clients"),
     .package(
-      url: "https://github.com/pointfreeco/swift-composable-architecture",
-      from: .init(0, 47, 2)
-    ),
-    .package(
       url: "https://github.com/johnpatrickmorgan/TCACoordinators",
       from: .init(0, 3, 0)
     ),
@@ -82,7 +78,7 @@ extension Target.Dependency {
 
   struct External {
     static let ComposableArchitecture = Target.Dependency
-      .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+      .product(name: "TCA", package: "Clients")
     static let TCACoordinators = Target.Dependency
       .product(name: "TCACoordinators", package: "TCACoordinators")
   }

@@ -1,8 +1,8 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import ColorVision
-import ComposableArchitecture
 import Foundation
+import TCA
 
 public struct VisionSimulationClient {
   public var initialize: @Sendable (_ initialSimulation: VisionType) async throws -> InitializationSuccess

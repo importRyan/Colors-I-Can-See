@@ -3,7 +3,7 @@
 import CameraFlow
 import ColorsUI
 import ColorVision
-import ComposableArchitecture
+import TCA
 import Onboarding
 
 public struct Root: ReducerProtocol {

@@ -1,6 +1,6 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
-import ComposableArchitecture
+import TCA
 import XCTest
 
 @testable import Onboarding

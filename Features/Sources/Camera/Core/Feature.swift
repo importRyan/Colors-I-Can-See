@@ -1,7 +1,7 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import ColorVision
-import ComposableArchitecture
+import TCA
 import VisionSimulation
 
 public struct Camera: ReducerProtocol {
@@ -31,7 +31,7 @@ public struct Camera: ReducerProtocol {
     Reduce { state, action in
       switch action {
       case .pressedCapturePhoto:
-        return .none
+        return .send(.pressedCapturePhoto)
       case .binding(\.$vision):
         return .run { [vision = state.vision] _ in
           await visionSimulation.changeSimulation(vision)

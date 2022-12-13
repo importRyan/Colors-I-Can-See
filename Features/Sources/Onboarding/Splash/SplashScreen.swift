@@ -1,7 +1,7 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import ColorsUI
-import ComposableArchitecture
+import TCA
 
 #warning("TODO: Create animated intro")
 extension Splash {

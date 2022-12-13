@@ -12,6 +12,7 @@ let package = Package(
     .watchOS(.v9),
   ],
   products: [
+    .library(name: "TCA", targets: ["TCA"]),
     .library(name: "VisionSimulation", targets: ["VisionSimulation"]),
   ],
   dependencies: [
@@ -23,10 +24,16 @@ let package = Package(
   ],
   targets: [
     .target(
+      name: "TCA",
+      dependencies: [
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+      ]
+    ),
+    .target(
       name: "VisionSimulation",
       dependencies: [
         .byName(name: "ColorVision"),
-        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+        .byName(name: "TCA"),
       ],
       exclude: [
         "Resources/Metal/Machado.air",
@@ -35,6 +42,6 @@ let package = Package(
       resources: [
         .copy("Resources/Metal/")
       ]
-    ),
+    )
   ]
 )

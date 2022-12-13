@@ -2,8 +2,8 @@
 
 import ColorVision
 import Combine
-import ComposableArchitecture
 import MetalKit
+import TCA
 
 extension VisionSimulationClient {
   public static let live = Self.init(

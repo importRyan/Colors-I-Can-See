@@ -2,7 +2,7 @@
 
 import ColorsUI
 import Camera
-import ComposableArchitecture
+import TCA
 import TCACoordinators
 
 extension CameraFlow {

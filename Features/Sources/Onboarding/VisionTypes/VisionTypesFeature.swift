@@ -1,7 +1,7 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import ColorVision
-import ComposableArchitecture
+import TCA
 
 public struct VisionTypes: ReducerProtocol {
 

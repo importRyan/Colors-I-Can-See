@@ -3,8 +3,8 @@
 import Camera
 import ColorsUI
 import ColorVision
-import ComposableArchitecture
 import Onboarding
+import TCA
 import VisionSimulation
 
 public struct Initialization: ReducerProtocol {
