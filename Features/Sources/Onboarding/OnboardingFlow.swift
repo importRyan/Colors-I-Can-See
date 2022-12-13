@@ -2,8 +2,8 @@
 
 import ColorsUI
 import ColorVision
-import TCA
-import TCAC
+import ComposableArchitecture
+import TCACoordinators
 
 extension OnboardingFlow {
   public struct Coordinator: ReducerProtocol {

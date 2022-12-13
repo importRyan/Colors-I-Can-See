@@ -15,8 +15,15 @@ let package = Package(
   dependencies: [
     .package(path: "../ColorsUI"),
     .package(path: "../ColorVision"),
-    .package(path: "../Dependencies"),
-    .package(path: "../ExternalDependencies"),
+    .package(path: "../Clients"),
+    .package(
+      url: "https://github.com/pointfreeco/swift-composable-architecture",
+      from: .init(0, 47, 2)
+    ),
+    .package(
+      url: "https://github.com/johnpatrickmorgan/TCACoordinators",
+      from: .init(0, 3, 0)
+    ),
   ],
   targets: [
     .target(name: "Root", dependencies: [
@@ -65,7 +72,7 @@ extension Target.Dependency {
 
   struct Clients {
     static let VisionSimulation = Target.Dependency
-      .product(name: "VisionSimulation", package: "Dependencies")
+      .product(name: "VisionSimulation", package: "Clients")
   }
 
   struct Internal {
@@ -75,8 +82,8 @@ extension Target.Dependency {
 
   struct External {
     static let ComposableArchitecture = Target.Dependency
-      .product(name: "TCA", package: "ExternalDependencies")
+      .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
     static let TCACoordinators = Target.Dependency
-      .product(name: "TCAC", package: "ExternalDependencies")
+      .product(name: "TCACoordinators", package: "TCACoordinators")
   }
 }

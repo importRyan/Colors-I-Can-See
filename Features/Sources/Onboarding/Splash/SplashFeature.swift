@@ -1,6 +1,6 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
-import TCA
+import ComposableArchitecture
 
 public struct Splash: ReducerProtocol {
 

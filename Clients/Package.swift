@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "Dependencies",
+  name: "Clients",
   defaultLocalization: "en",
   platforms: [
     .iOS(.v16),
@@ -15,7 +15,10 @@ let package = Package(
     .library(name: "VisionSimulation", targets: ["VisionSimulation"]),
   ],
   dependencies: [
-    .package(path: "../ExternalDependencies"),
+    .package(
+      url: "https://github.com/pointfreeco/swift-composable-architecture",
+      from: .init(0, 47, 2)
+    ),
     .package(path: "../ColorVision"),
   ],
   targets: [
@@ -23,7 +26,7 @@ let package = Package(
       name: "VisionSimulation",
       dependencies: [
         .byName(name: "ColorVision"),
-        .product(name: "TCA", package: "ExternalDependencies"),
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
       ],
       exclude: [
         "Resources/Metal/Machado.air",

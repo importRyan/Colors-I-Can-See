@@ -2,8 +2,8 @@
 
 import ColorsUI
 import Camera
-import TCA
-import TCAC
+import ComposableArchitecture
+import TCACoordinators
 
 extension CameraFlow {
   public struct Coordinator: ReducerProtocol {

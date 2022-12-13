@@ -18,8 +18,6 @@
 		940F2451293EAE2900B40C74 /* AppDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegates.swift; sourceTree = "<group>"; };
 		940F2453293EB0C300B40C74 /* Root.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Root.xctestplan; path = TestPlans/Root.xctestplan; sourceTree = "<group>"; };
 		9451581F293E5D7D005B9D44 /* Colors-I-Can-See-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Colors-I-Can-See-Info.plist"; sourceTree = SOURCE_ROOT; };
-		947592A829469B0F008AB3C5 /* ExternalDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ExternalDependencies; path = ../ExternalDependencies; sourceTree = "<group>"; };
-		947688EC294655D500B838B1 /* Dependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Dependencies; path = ../Dependencies; sourceTree = "<group>"; };
 		94CFB45B29469ABE00EDAE7B /* ColorVision */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ColorVision; path = ../ColorVision; sourceTree = "<group>"; };
 		94DC759A28D51DAD00F421B5 /* Colors I Can See.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Colors I Can See.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94DC759D28D51DAD00F421B5 /* MultiplatformApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplatformApp.swift; sourceTree = "<group>"; };
@@ -28,6 +26,7 @@
 		94DC75A528D51DAE00F421B5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		94DC75AC28D5236A00F421B5 /* ColorsUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ColorsUI; path = ../ColorsUI; sourceTree = "<group>"; };
 		94DC75AD28D5248A00F421B5 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Features; path = ../Features; sourceTree = "<group>"; };
+		94E2A682294910C600D02046 /* Clients */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Clients; path = ../Clients; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,8 +47,7 @@
 				940F2453293EB0C300B40C74 /* Root.xctestplan */,
 				94DC75AC28D5236A00F421B5 /* ColorsUI */,
 				94CFB45B29469ABE00EDAE7B /* ColorVision */,
-				947688EC294655D500B838B1 /* Dependencies */,
-				947592A829469B0F008AB3C5 /* ExternalDependencies */,
+				94E2A682294910C600D02046 /* Clients */,
 				94DC75AD28D5248A00F421B5 /* Features */,
 				94DC759C28D51DAD00F421B5 /* Colors I Can See */,
 				94DC759B28D51DAD00F421B5 /* Products */,

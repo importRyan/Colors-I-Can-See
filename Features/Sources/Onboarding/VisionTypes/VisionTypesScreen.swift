@@ -2,7 +2,7 @@
 
 import ColorsUI
 import ColorVision
-import TCA
+import ComposableArchitecture
 
 extension VisionTypes {
 

@@ -4,7 +4,7 @@ import ColorVision
 import Combine
 import CoreImage
 import Foundation
-import TCA
+import ComposableArchitecture
 import XCTestDynamicOverlay
 
 public struct MetalVisionSimulationClient {

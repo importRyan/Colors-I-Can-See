@@ -1,7 +1,7 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import ColorVision
-import TCA
+import ComposableArchitecture
 import XCTest
 
 @testable import Camera
