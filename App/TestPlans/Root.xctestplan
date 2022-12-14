@@ -27,6 +27,14 @@
         "identifier" : "CameraTests",
         "name" : "CameraTests"
       }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Clients",
+        "identifier" : "TCATests",
+        "name" : "TCATests"
+      }
     }
   ],
   "version" : 1
