@@ -10,7 +10,6 @@ extension MetalCameraVC {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .black
     view.addSubview(mtkView)
   }
 
@@ -18,20 +17,16 @@ extension MetalCameraVC {
     super.viewWillAppear(animated)
     mtkView.translatesAutoresizingMaskIntoConstraints = false
     view.pinToBounds(mtkView)
-    if let orientation = AVCaptureVideoOrientation.fromCurrentDeviceOrientation() {
-      lastOrientation = orientation
-    }
   }
 
   /// Expects that prior VCs handled permissions so that MTKView can be built unstopped
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    setupMetal()
-    DispatchQueue.global(qos: .userInitiated).async {
-      self.setupAVCaptureSession()
-      self.monitorSceneChanges()
+    videoOutputQueue.async { [weak self] in
+      self?.setupMetal()
+      self?.setupAVCaptureSession()
+      self?.monitorSceneChanges()
     }
-    view.backgroundColor = .white // For camera "take picture flash"
   }
 }
 
@@ -45,6 +40,7 @@ extension MetalCameraVC {
     mtkView.enableSetNeedsDisplay = false
     mtkView.delegate = self
     mtkView.framebufferOnly = false
+
     ciContext = CIContext(
       mtlDevice: metalDevice,
       options: [.workingColorSpace: CGColorSpace(name: CGColorSpace.sRGB)!])
@@ -61,9 +57,10 @@ private extension MetalCameraVC {
     session?.automaticallyConfiguresCaptureDeviceForWideColor = false
     setupAVInputs()
     setupAVOutputs()
-    setDrawableScaleToScreenTransform()
+    transformVideoToScreenEdges()
     session?.automaticallyConfiguresApplicationAudioSession = false
     session?.usesApplicationAudioSession = false
+
     session?.commitConfiguration()
     session?.startRunning()
     updateExposureDelegate()
@@ -87,9 +84,10 @@ private extension MetalCameraVC {
 
   func setupBackCamera() -> AVCaptureDevice? {
     let session = AVCaptureDevice.DiscoverySession(
-      deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera],
+      deviceTypes: [.builtInTripleCamera, .builtInDualWideCamera, .builtInWideAngleCamera, .builtInDualCamera],
       mediaType: .video,
-      position: .back)
+      position: .back
+    )
 
     let device = session.devices.first
     try? device?.lockForConfiguration()
@@ -125,6 +123,7 @@ private extension MetalCameraVC {
       fatalError("Cannot use camera outputs")
     }
     session?.addOutput(videoOutput!)
+    videoOutput!.connections.first?.videoOrientation = .portrait
   }
 
 }

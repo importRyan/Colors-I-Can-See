@@ -11,8 +11,7 @@ final class MetalCameraVC: UIViewController {
 
   let mtkView = MTKView()
   private(set) var image = CIImage()
-  private var drawableScaleTransform: CGAffineTransform = .identity
-  var lastOrientation: AVCaptureVideoOrientation = .landscapeRight
+  private var scaleVideoToScreenEdges: CGAffineTransform = .identity
 
   weak var exposureDelegate: ExposureDelegate?
 
@@ -73,38 +72,38 @@ extension MetalCameraVC: AVCaptureVideoDataOutputSampleBufferDelegate {
 extension MetalCameraVC : MTKViewDelegate {
 
   func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-    updateAVCaptureOrientation()
+    transformVideoToScreenEdges(nil)
   }
 
   func draw(in mtkview: MTKView) {
-
-    image = image.transformed(by: drawableScaleTransform)
+    image = image.transformed(by: scaleVideoToScreenEdges)
     image = image.cropped(to: mtkview.drawableSize.zeroOriginRect())
 
     guard let buffer = metalCommandQueue.makeCommandBuffer(),
           let currentDrawable = mtkview.currentDrawable
     else { return }
 
-    ciContext.render(image,
-                     to: currentDrawable.texture,
-                     commandBuffer: buffer,
-                     bounds: mtkview.drawableSize.zeroOriginRect(),
-                     colorSpace: CGColorSpaceCreateDeviceRGB())
+    ciContext
+      .render(
+        image,
+        to: currentDrawable.texture,
+        commandBuffer: buffer,
+        bounds: mtkview.drawableSize.zeroOriginRect(),
+        colorSpace: CGColorSpaceCreateDeviceRGB()
+      )
 
     buffer.present(currentDrawable)
     buffer.commit()
   }
 
-  func setDrawableScaleToScreenTransform() {
-    session?.connections.first?.videoOrientation = lastOrientation
+  func transformVideoToScreenEdges(_ newSize: CGSize? = nil) {
+    let videoSize = newSize ?? videoOutput?.outputSize ?? mtkView.drawableSize
 
-    let videoSize = videoOutput?.outputSize ?? mtkView.drawableSize
+    let ratioDisplayWidthToVideoWidth = mtkView.drawableSize.width / videoSize.width
+    let ratioDisplayHeightToVideoHeight = mtkView.drawableSize.height / videoSize.height
+    let largestRatio = max(ratioDisplayWidthToVideoWidth, ratioDisplayHeightToVideoHeight)
 
-    let widthRatio = mtkView.drawableSize.width / videoSize.width
-    let heightRatio = mtkView.drawableSize.height / videoSize.height
-    let scale = max(widthRatio, heightRatio)
-
-    drawableScaleTransform = CGAffineTransform(scaleX: scale, y: scale)
+    scaleVideoToScreenEdges = CGAffineTransform(scaleX: largestRatio, y: largestRatio)
   }
 }
 
@@ -124,6 +123,20 @@ extension MetalCameraVC {
   }
 }
 
+// MARK: - Prevent Rotation
+
+extension MetalCameraVC {
+  override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    .portrait
+  }
+
+  override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+    .portrait
+  }
+
+  /// Deprecated in iOS 16, but appears to be some bugs without use.
+  override var shouldAutorotate: Bool { false }
+}
 
 // MARK: - Intents
 
@@ -204,16 +217,13 @@ extension MetalCameraVC {
       guard session?.canAddInput(selfieInput)  == true else { return }
       session?.addInput(selfieInput)
       videoOutput?.connections.first?.isVideoMirrored = true
-      videoOutput?.connections.first?.videoOrientation = lastOrientation
-
     } else {
       session?.removeInput(selfieInput)
       guard session?.canAddInput(backInput) == true else { return }
       session?.addInput(backInput)
       videoOutput?.connections.first?.isVideoMirrored = false
-      videoOutput?.connections.first?.videoOrientation = lastOrientation
     }
-
+    videoOutput?.connections.first?.videoOrientation = .portrait
     session?.commitConfiguration()
     updateExposureDelegate()
     isConfiguringCamera = false
@@ -221,9 +231,9 @@ extension MetalCameraVC {
   }
 
   func start() {
-    videoOutputQueue.async {
-      guard self.session?.isRunning == false else { return }
-      self.session?.startRunning()
+    videoOutputQueue.async { [weak self] in
+      guard self?.session?.isRunning == false else { return }
+      self?.session?.startRunning()
     }
   }
 
