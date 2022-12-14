@@ -30,7 +30,7 @@ extension MetalCameraVC {
   }
 }
 
-// 1 Metal & Filter
+// MARK: - 1 Metal & Filter
 
 extension MetalCameraVC {
 
@@ -47,7 +47,7 @@ extension MetalCameraVC {
   }
 }
 
-// 2 AVCapture
+// MARK: - 2 AVCapture
 
 private extension MetalCameraVC {
 
@@ -127,4 +127,37 @@ private extension MetalCameraVC {
   }
 
 }
+
+// MARK: - 3 Pause and Restart Camera on Scene Change
+
+extension MetalCameraVC {
+
+  func monitorSceneChanges() {
+    restartOnForegrounding = NotificationCenter
+      .default
+      .publisher(for: UIApplication.willEnterForegroundNotification)
+      .sink { [weak self] _ in self?.start() }
+
+    pauseOnBackgrounding = NotificationCenter
+      .default
+      .publisher(for: UIApplication.willResignActiveNotification)
+      .sink { [weak self] _ in self?.pause() }
+  }
+}
+
+// MARK: - Prevent Rotation (See DTS History)
+
+extension MetalCameraVC {
+  override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    .portrait
+  }
+
+  override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+    .portrait
+  }
+
+  /// Deprecated in iOS 16, but appears to be some bugs without use.
+  override var shouldAutorotate: Bool { false }
+}
+
 #endif
