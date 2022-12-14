@@ -18,10 +18,11 @@ class iOSAppDelegate: NSObject, UIApplicationDelegate {
 
   func application(
     _ app: UIApplication,
-    didFinishLaunchingWithOptions options: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-      viewStore.send(.initialization(.didFinishLaunching))
-      return true
-    }
+    didFinishLaunchingWithOptions options: [UIApplication.LaunchOptionsKey : Any]?
+  ) -> Bool {
+    viewStore.send(.initialization(.didFinishLaunching))
+    return true
+  }
 }
 
 #elseif os(macOS)

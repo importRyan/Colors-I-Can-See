@@ -33,7 +33,9 @@ public struct Root: ReducerProtocol {
       switch action {
 
       case .initialization(.complete):
-        state = .onboarding(.initialState())
+        state = .camera(
+          .initialState(settings: .init(vision: .deutan))
+        )
         return .none
 
       case let .onboarding(.send(.advanceToCamera(vision))):
