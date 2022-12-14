@@ -77,16 +77,6 @@ extension MetalCameraVC : MTKViewDelegate {
 
   func draw(in mtkview: MTKView) {
     image = image.transformed(by: scaleVideoToScreenEdges)
-
-    /// Workaround for orientation lock issue
-    switch UIDevice.current.orientation {
-    case .landscapeRight:
-      image = image.transformed(by: image.orientationTransform(for: .right))
-    case .landscapeLeft:
-      image = image.transformed(by: image.orientationTransform(for: .left))
-    default: break
-    }
-
     image = image.cropped(to: mtkview.drawableSize.zeroOriginRect())
 
     guard let buffer = metalCommandQueue.makeCommandBuffer(),

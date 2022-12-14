@@ -23,6 +23,13 @@ class iOSAppDelegate: NSObject, UIApplicationDelegate {
     viewStore.send(.initialization(.didFinishLaunching))
     return true
   }
+
+  func application(
+    _ app: UIApplication,
+    supportedInterfaceOrientationsFor window: UIWindow?
+  ) -> UIInterfaceOrientationMask {
+    .portrait
+  }
 }
 
 #elseif os(macOS)
