@@ -18,10 +18,12 @@ extension LearnAboutVisionTypes {
     public var body: some View {
       WithViewStore(store) { viewStore in
         VStack(alignment: .leading, spacing: 15) {
+#if os(iOS)
           Text(Strings.headline)
             .font(.title2.weight(.bold))
             .padding(.top, 30)
             .padding(.leading, 20)
+#endif
 
           IfItFits(in: .horizontal) {
             OneLinePicker(
@@ -32,6 +34,9 @@ extension LearnAboutVisionTypes {
             )
             .padding(.leading, 20)
           }
+#if os(macOS)
+          .scenePadding(.top)
+#endif
 
           VisionInfoCardCarousel(
             explicitSelectionAnimation: explicitSelectionAnimation,
@@ -39,17 +44,14 @@ extension LearnAboutVisionTypes {
           )
         }
       }
+      .navigationTitle(Strings.headline)
     }
   }
 }
 
 extension LearnAboutVisionTypes.Screen {
   fileprivate struct Strings {
-    static let headline = String(
-      localized: "VisionTypes.Headline",
-      defaultValue: "Color blindness types",
-      bundle: .module
-    )
+    static let headline = String(localized: "VisionTypes.Headline", bundle: .module)
   }
 }
 

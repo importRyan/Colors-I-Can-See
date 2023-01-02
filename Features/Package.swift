@@ -82,6 +82,7 @@ let package = Package(
       .Internal.ColorsUI,
       .Internal.Models,
       "Camera",
+      "Images",
       "Learn",
     ]),
   ]

@@ -2,6 +2,7 @@
 
 import Camera
 import ColorsUI
+import Images
 import Learn
 import TCA
 
@@ -90,6 +91,11 @@ extension Tabs.Screen {
   }
 
   private var imageTab: some View {
-    VStack { }
+    ImagesCoordinator.Screen(
+      store: store.scope(
+        state: \.imagesTab,
+        action: Tabs.Action.images
+      )
+    )
   }
 }

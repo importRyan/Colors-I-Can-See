@@ -26,6 +26,7 @@ extension Camera {
       }
       .onAppear { ViewStore(store.stateless).send(.onAppear) }
       .onDisappear() { ViewStore(store.stateless).send(.onDisappear) }
+      .navigationTitle(.init("Camera.NavTitle", bundle: .module))
 #if os(macOS)
       .toolbar { Controls_macOSToolbar(store: store) }
       .toolbar(.visible, for: .windowToolbar)

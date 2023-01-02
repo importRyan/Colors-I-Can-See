@@ -2,6 +2,7 @@
 
 import Camera
 import ColorsFoundation
+import Images
 import Learn
 import TCA
 
@@ -17,14 +18,17 @@ public struct Tabs: ReducerProtocol {
     public var currentTab: Tab
     public var cameraTab: Camera.State
     public var learnTab: LearnAboutVisionTypes.State
+    public var imagesTab: ImagesCoordinator.State
 
     public init(
       initialTab: Tab,
       cameraTab: Camera.State,
+      imagesTab: ImagesCoordinator.State,
       learnTab: LearnAboutVisionTypes.State
     ) {
       self.currentTab = initialTab
       self.cameraTab = cameraTab
+      self.imagesTab = imagesTab
       self.learnTab = learnTab
     }
   }
@@ -33,6 +37,7 @@ public struct Tabs: ReducerProtocol {
     case selectTab(Tab)
     case learn(LearnAboutVisionTypes.Action)
     case camera(Camera.Action)
+    case images(ImagesCoordinator.Action)
   }
 
   public var body: some ReducerProtocol<State, Action> {
@@ -47,7 +52,7 @@ public struct Tabs: ReducerProtocol {
         state.currentTab = tab
         return .none
 
-      case .camera, .learn:
+      case .camera, .images, .learn:
         return .none
       }
     }
@@ -64,6 +69,11 @@ public struct Tabs: ReducerProtocol {
       state: \.cameraTab,
       action: /Action.camera,
       Camera.init
+    )
+    Scope(
+      state: \.imagesTab,
+      action: /Action.images,
+      ImagesCoordinator.init
     )
   }
 }

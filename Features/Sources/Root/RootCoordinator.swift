@@ -41,6 +41,7 @@ public struct Root: ReducerProtocol {
           .init(
             initialTab: .learn,
             cameraTab: .init(vision: .deutan),
+            imagesTab: .init(),
             learnTab: .init(vision: .deutan)
           )
         )
@@ -51,6 +52,7 @@ public struct Root: ReducerProtocol {
           .init(
             initialTab: .camera,
             cameraTab: .init(vision: .deutan),
+            imagesTab: .init(),
             learnTab: .init(vision: .deutan)
           )
         )
