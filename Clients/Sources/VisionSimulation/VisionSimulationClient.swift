@@ -4,6 +4,9 @@ import AsyncAlgorithms
 import TCA
 import VisionType
 
+import class CoreImage.CIImage
+import class CoreGraphics.CGImage
+
 public struct VisionSimulationClient {
   public var initialize: @Sendable (_ initialSimulation: VisionType) async throws -> InitializationSuccess
   public var cameraAuthorize: @Sendable () async -> Result<AuthorizationSuccess, AuthorizationError>
@@ -13,6 +16,7 @@ public struct VisionSimulationClient {
   public var cameraStop: @Sendable () async -> ()
   public var cameraChangeSimulation: @Sendable (_ newSimulation: VisionType) async -> Void
   public var errors: @Sendable () -> AsyncChannel<Error>
+  public var computeSimulations: @Sendable (CGImage) async throws -> [VisionType: CIImage]
 }
 
 // MARK: - Return Types
@@ -46,6 +50,8 @@ public enum MetalError: Equatable, Error {
   case textureCacheCreationFailed
   case imageBufferNotAvailable
   case imageBufferTextureUnavailable
+  case computeBufferNotAvailable
+  case computeTextureCreationFailed
 }
 
 // MARK: - TCA

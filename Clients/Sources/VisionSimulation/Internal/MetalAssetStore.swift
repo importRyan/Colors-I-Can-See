@@ -12,6 +12,8 @@ final class MetalAssetStore {
   let library: MetalColorVisionSimulationLibrary
 
   let computeCommandQueue: MTLCommandQueue
+  let computePipelineState: MTLComputePipelineState
+  let computeTextureLoader: MTKTextureLoader
 
   let realtimeCommandQueue: MTLCommandQueue
   let realtimeRenderPipelineState: MTLRenderPipelineState
@@ -30,6 +32,9 @@ final class MetalAssetStore {
     self.realtimeFilter = initialSimulation
 
     self.computeCommandQueue = try device.makeCommandQueue()
+    self.computeTextureLoader = MTKTextureLoader(device: device)
+    self.computePipelineState = try device.makeComputePipelineState(function: library.computeFunction)
+
     self.realtimeCommandQueue = try device.makeCommandQueue()
     self.realtimeRenderPipelineState = try CreateRealTimePipelineState(device, library)
     self.realtimeTextureCache = try CreateRealTimeTextureCache(device)

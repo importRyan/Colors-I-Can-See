@@ -43,6 +43,9 @@ extension VisionSimulationClient {
       },
       errors: {
         errors
+      },
+      computeSimulations: { cgImage in
+        try await metal.computeSimulations(for: cgImage)
       }
     )
   }()

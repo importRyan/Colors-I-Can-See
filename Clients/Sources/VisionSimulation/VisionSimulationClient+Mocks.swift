@@ -44,6 +44,9 @@ extension VisionSimulationClient {
       let errors = AsyncChannel<Error>()
       defer { errors.finish() }
       return errors
+    },
+    computeSimulations: { _ in
+      throw MetalError.computeTextureCreationFailed
     }
   )
 
@@ -71,6 +74,9 @@ extension VisionSimulationClient {
       },
       errors: {
         .init()
+      },
+      computeSimulations: { _ in
+          .init()
       }
     )
   }()
