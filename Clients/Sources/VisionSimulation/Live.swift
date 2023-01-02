@@ -1,94 +1,90 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
-import ColorVision
+import AsyncAlgorithms
 import Combine
 import MetalKit
 import TCA
+import VisionType
 
 extension VisionSimulationClient {
-  public static let live = Self.init(
-    initialize: { initialSimulation in
-      try await setupMetalOnSpecificQueue(with: initialSimulation)
-    },
-    changeSimulation: { newSimulation in
-      MetalController.live?.vision.send(newSimulation)
-    }
-  )
-}
+  public static let live = {
+    let errors = AsyncChannel<Error>()
 
-// MARK: - Module Internal Singleton
-
-class MetalController {
-
-  /// Initialize and use only from its private DispatchQueue
-  fileprivate(set) static var live: MetalController?
-
-  let queue: DispatchQueue
-  var filter: CIFilter?
-  private var filterUpdates: AnyCancellable?
-  let vision: CurrentValueSubject<VisionType, Never>
-  let device: MTLDevice
-  let realtimeCommandQueue: MTLCommandQueue
-
-  fileprivate init(
-    device: MTLDevice,
-    initialSimulation: VisionType,
-    queue: DispatchQueue,
-    realTimeCommandQueue: MTLCommandQueue
-  ) {
-    self.device = device
-    self.queue = queue
-    self.realtimeCommandQueue = realTimeCommandQueue
-    self.vision = .init(initialSimulation)
-    self.filterUpdates = self.vision
-      .receive(on: self.queue)
-      .debounce(for: .milliseconds(200), scheduler: self.queue)
-      .sink { [weak self] newSimulation in
-        guard let self else { return }
-        self.filter = .init(vision: newSimulation)
+    return Self.init(
+      initialize: { initialSimulation in
+        try await initializeInternalSingletons(
+          with: initialSimulation,
+          errors: errors
+        )
+      },
+      cameraAuthorize: {
+        await AVCameraCapture.authorize()
+      },
+      cameraAuthorizationStatus: {
+        AVCameraCapture.currentAuthorizationStatus()
+      },
+      cameraStart: {
+        do {
+          let result = try await camera.startCamera()
+          return .success(result)
+        } catch {
+          return .failure((error as? CameraError) ?? CameraError.unknown)
+        }
+      },
+      cameraRestart: {
+        camera.restartCamera()
+      },
+      cameraStop: {
+        camera.stopCamera()
+      },
+      cameraChangeSimulation: { newSimulation in
+        metal?.dispatchQueue.sync {
+          metal?.filter = newSimulation
+        }
+      },
+      errors: {
+        errors
       }
-  }
+    )
+  }()
 }
+
 
 // MARK: - Initialize Module Singleton
 
-private func setupMetalOnSpecificQueue(with initialSimulation: VisionType) async throws -> InitializationSuccess {
+fileprivate(set) var camera: AVCameraCapture!
+fileprivate(set) var metal: MetalAssetStore!
+
+private func initializeInternalSingletons(
+  with initialSimulation: VisionType,
+  errors: AsyncChannel<Error>
+) async throws -> InitializationSuccess {
+
   try await withCheckedThrowingContinuation { continuation in
     let queue = DispatchQueue(
-      label: "com.ryanferrell.visionSimulation",
+      label: "com.ryanferrell.colors-i-can-see.visionSimulation",
       qos: .userInteractive
     )
-    queue.async {
-      do {
-        let success = try setupSingleton(queue, initialSimulation)
-        continuation.resume(with: .success(success))
-      } catch {
-        continuation.resume(with: .failure(error))
-      }
+    do {
+      metal = try .init(
+        initialSimulation: initialSimulation,
+        queue: queue
+      )
+
+      camera = .init(
+        queue: queue,
+        didCaptureFrame: { buffer in
+          do {
+            try metal.getTexture(fromCapturedFrame: buffer)
+          } catch {
+            Task { await errors.send(error) }
+          }
+        }
+      )
+
+      continuation.resume(with: .success(.init()))
+    } catch {
+      continuation.resume(with: .failure(error))
     }
   }
-}
-
-private func setupSingleton(
-  _ queue: DispatchQueue,
-  _ initialSimulation: VisionType
-) throws -> InitializationSuccess {
-
-  guard let device = MTLCreateSystemDefaultDevice() else {
-    throw InitializationError.gpuUnavailable
-  }
-  guard let commandQueue = device.makeCommandQueue() else {
-    throw InitializationError.gpuCommandsUnavailable
-  }
-
-  MachadoFilterVendor.registerFilters()
-
-  MetalController.live = .init(
-    device: device,
-    initialSimulation: initialSimulation,
-    queue: queue,
-    realTimeCommandQueue: commandQueue
-  )
-
-  return .init()
 }

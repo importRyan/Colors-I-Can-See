@@ -20,6 +20,10 @@ let package = Package(
       url: "https://github.com/pointfreeco/swift-composable-architecture",
       from: .init(0, 47, 2)
     ),
+    .package(
+      url: "https://github.com/apple/swift-async-algorithms",
+      from: .init(0, 0, 3)
+    ),
     .package(path: "../ColorVision"),
   ],
   targets: [
@@ -36,16 +40,11 @@ let package = Package(
     .target(
       name: "VisionSimulation",
       dependencies: [
-        .byName(name: "ColorVision"),
+        .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
+        .product(name: "MetalColorVisionSimulation", package: "ColorVision"),
         .byName(name: "TCA"),
       ],
-      exclude: [
-        "Resources/Metal/Machado.air",
-        "Resources/Metal/Machado.metal",
-      ],
-      resources: [
-        .copy("Resources/Metal/")
-      ]
+      resources: [.process("Resources")]
     )
   ]
 )

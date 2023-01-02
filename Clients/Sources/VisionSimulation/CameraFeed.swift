@@ -10,17 +10,40 @@ public struct CameraFeed: View {
       .edgesIgnoringSafeArea(.all)
 
 #elseif os(iOS)
-    iOSHostedMetalCamera(metal: .live!)
+    iOSHostedMetalCamera(metal: metal)
       .edgesIgnoringSafeArea(.all)
 
 #elseif os(macOS)
-    macOSMock()
+    macOSHostedMetalCamera(metal: metal)
       .edgesIgnoringSafeArea(.all)
+
 #endif
   }
 }
 
 // MARK: - Implementations
+
+#if os(iOS)
+struct iOSHostedMetalCamera: UIViewControllerRepresentable {
+  let metal: MetalAssetStore
+  func makeUIViewController(context: Context) -> MTKViewController {
+    .init(metal: metal)
+  }
+  func updateUIViewController(_ vc: MTKViewController, context: Context) {
+  }
+}
+#elseif os(macOS)
+struct macOSHostedMetalCamera: NSViewControllerRepresentable {
+  let metal: MetalAssetStore
+  func makeNSViewController(context: Context) -> MTKViewController {
+    .init(metal: metal)
+  }
+  func updateNSViewController(_ vc: MTKViewController, context: Context) {
+  }
+}
+#endif
+
+
 
 #if DEBUG
 struct SimulatorMock: View {
@@ -29,39 +52,6 @@ struct SimulatorMock: View {
     ZStack {
       Color.black
       Text("Mock camera for iOS simulator.")
-        .foregroundStyle(.secondary)
-        .font(.caption)
-    }
-  }
-}
-#endif
-
-#if os(iOS)
-struct iOSHostedMetalCamera: UIViewControllerRepresentable {
-
-  let metal: MetalController
-
-  func makeUIViewController(context: Context) -> MetalCameraVC {
-    .init(
-      device: metal.device,
-      commandQueue: metal.realtimeCommandQueue,
-      queue: metal.queue,
-      controller: metal
-    )
-  }
-
-  func updateUIViewController(_ uiViewController: MetalCameraVC, context: Context) {
-
-  }
-}
-#endif
-
-#if os(macOS)
-struct macOSMock: View {
-  var body: some View {
-    ZStack {
-      Color.black
-      Text("Temporary mock camera for macOS.")
         .foregroundStyle(.secondary)
         .font(.caption)
     }
