@@ -11,6 +11,7 @@ let package = Package(
     .library(name: "Camera", targets: ["Camera"]),
     .library(name: "CameraFlow", targets: ["CameraFlow"]),
     .library(name: "Onboarding", targets: ["Onboarding"]),
+    .library(name: "Tabs", targets: ["Tabs"]),
   ],
   dependencies: [
     .package(path: "../ColorsUI"),
@@ -25,10 +26,9 @@ let package = Package(
     .target(name: "Root", dependencies: [
       .Clients.VisionSimulation,
       .Internal.ColorsUI,
-      "CameraFlow",
-      "Onboarding",
       .External.ComposableArchitecture,
       .External.TCACoordinators,
+      "Tabs",
     ]),
     .target(name: "CameraFlow", dependencies: [
       .Internal.ColorsUI,
@@ -57,6 +57,13 @@ let package = Package(
     .testTarget(name: "OnboardingTests", dependencies: [
       "Onboarding"
     ]),
+    .target(name: "Tabs", dependencies: [
+      .External.ComposableArchitecture,
+      .Internal.ColorsUI,
+      .Internal.Models,
+      "CameraFlow",
+      "Onboarding",
+    ]),
   ]
 )
 
@@ -73,7 +80,7 @@ extension Target.Dependency {
 
   struct Internal {
     static let ColorsUI = Target.Dependency(stringLiteral: "ColorsUI")
-    static let Models = Target.Dependency(stringLiteral: "ColorVision")
+    static let Models = Target.Dependency.product(name: "VisionType", package: "ColorVision")
   }
 
   struct External {

@@ -2,10 +2,10 @@
 
 import Camera
 import ColorsUI
-import ColorVision
 import Onboarding
 import TCA
 import VisionSimulation
+import VisionType
 
 public struct Initialization: ReducerProtocol {
 
