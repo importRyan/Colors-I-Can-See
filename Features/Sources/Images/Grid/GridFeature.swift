@@ -8,9 +8,11 @@ public struct ImageGrid: ReducerProtocol {
   public init() {}
 
   public struct State: Equatable, Hashable {
-    public var didAppear = false
-    @BindableState var showFileImporter = false
-    public init() {}
+    @BindableState var showFileImporter: Bool
+
+    public init(showFileImporter: Bool = false) {
+      self.showFileImporter = showFileImporter
+    }
   }
 
   public enum Action: Equatable, BindableAction {
@@ -25,7 +27,6 @@ public struct ImageGrid: ReducerProtocol {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        state.didAppear = true
         return .none
       case .pressedImportImage:
         state.showFileImporter = true

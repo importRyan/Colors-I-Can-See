@@ -12,15 +12,22 @@ public struct ImagesCoordinator: ReducerProtocol {
   public struct State: Equatable, Hashable {
     @BindableState public var focusedImage: Int?
     public var grid: ImageGrid.State
+    public var comparison: ImageComparison.State
 
-    public init(focusedImage: Int? = nil, grid: ImageGrid.State = .init()) {
+    public init(
+      focusedImage: Int? = nil,
+      comparison: ImageComparison.State = .init(renders: [:]),
+      grid: ImageGrid.State = .init()
+    ) {
       self.focusedImage = focusedImage
+      self.comparison = comparison
       self.grid = grid
     }
   }
 
   public enum Action: Equatable, BindableAction {
     case grid(ImageGrid.Action)
+    case comparison(ImageComparison.Action)
     case binding(BindingAction<State>)
   }
 
@@ -34,6 +41,7 @@ public struct ImagesCoordinator: ReducerProtocol {
     BindingReducer()
     Reduce { state, action in
       switch action {
+      case .comparison: return .none
       case .grid: return .none
       case .binding: return .none
       }
@@ -47,8 +55,12 @@ public struct ImagesCoordinator: ReducerProtocol {
       action: /Action.grid,
       ImageGrid.init
     )
+    Scope(
+      state: \.comparison,
+      action: /Action.comparison,
+      ImageComparison.init
+    )
   }
-
 }
 
 extension ImagesCoordinator {
@@ -62,6 +74,12 @@ extension ImagesCoordinator {
 
     public var body: some View {
       NavigationStack {
+        ImageComparison.Screen(
+          store: store.scope(state: \.comparison, action: Action.comparison)
+        )
+      }
+      .navigationDestination(for: ImageGrid.State.self) { _ in
+        #warning("Implement non TCAC iOS 16 coordinator")
         ImageGrid.Screen(
           store: store.scope(state: \.grid, action: Action.grid)
         )
