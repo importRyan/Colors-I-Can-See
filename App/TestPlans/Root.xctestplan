@@ -16,14 +16,6 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:..\/Features",
-        "identifier" : "OnboardingTests",
-        "name" : "OnboardingTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:..\/Features",
         "identifier" : "CameraTests",
         "name" : "CameraTests"
       }
@@ -34,6 +26,22 @@
         "containerPath" : "container:..\/Clients",
         "identifier" : "TCATests",
         "name" : "TCATests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Features",
+        "identifier" : "LearnTests",
+        "name" : "LearnTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/ColorsUI",
+        "identifier" : "ColorsUITests",
+        "name" : "ColorsUITests"
       }
     }
   ],

@@ -2,7 +2,7 @@
 
 import Camera
 import ColorsUI
-import Onboarding
+import Learn
 import TCA
 
 extension Tabs {
@@ -72,7 +72,7 @@ extension Tabs {
 
 extension Tabs.Screen {
   private var learnTab: some View {
-    OnboardingFlow(
+    LearnAboutVisionTypes.Screen(
       store: store.scope(
         state: \.learnTab,
         action: Tabs.Action.learn

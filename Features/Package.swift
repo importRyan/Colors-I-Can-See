@@ -9,7 +9,8 @@ let package = Package(
   products: [
     .library(name: "Root", targets: ["Root"]),
     .library(name: "Camera", targets: ["Camera"]),
-    .library(name: "CameraFlow", targets: ["CameraFlow"]),
+    .library(name: "Images", targets: ["Images"]),
+    .library(name: "Learn", targets: ["Learn"]),
     .library(name: "Onboarding", targets: ["Onboarding"]),
     .library(name: "Tabs", targets: ["Tabs"]),
   ],
@@ -30,11 +31,12 @@ let package = Package(
       .Internal.Foundation,
       .External.ComposableArchitecture,
       .External.TCACoordinators,
+      "Onboarding",
       "Tabs",
     ]),
-    .target(name: "CameraFlow", dependencies: [
+    .target(name: "Images", dependencies: [
+      .Clients.VisionSimulation,
       .Internal.ColorsUI,
-      "Camera",
       .External.ComposableArchitecture,
       .External.TCACoordinators,
     ]),
@@ -52,6 +54,18 @@ let package = Package(
       "Camera"
     ]),
     .target(
+      name: "Learn",
+      dependencies: [
+        .Internal.ColorsUI,
+        .External.ComposableArchitecture,
+        .External.TCACoordinators,
+      ],
+      resources: [.process("Resources")]
+    ),
+    .testTarget(name: "LearnTests", dependencies: [
+      "Learn"
+    ]),
+    .target(
       name: "Onboarding",
       dependencies: [
         .Internal.ColorsUI,
@@ -67,8 +81,8 @@ let package = Package(
       .External.ComposableArchitecture,
       .Internal.ColorsUI,
       .Internal.Models,
-      "CameraFlow",
-      "Onboarding",
+      "Camera",
+      "Learn",
     ]),
   ]
 )

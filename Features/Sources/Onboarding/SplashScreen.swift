@@ -77,7 +77,7 @@ extension Splash {
     )
     static let cta = String(
       localized: "Splash.CTA",
-      defaultValue: "Many of use see differently",
+      defaultValue: "Learn more",
       bundle: .module
     )
   }

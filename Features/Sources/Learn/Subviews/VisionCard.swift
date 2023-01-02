@@ -14,7 +14,7 @@ struct VisionCard: View {
     cardContents
       .onTapGesture(perform: onTap)
       .frame(
-        width: carouselSize.width * 0.8,
+        width: min(400, carouselSize.width * 0.8),
         height: carouselSize.height,
         alignment: .topLeading
       )

@@ -4,15 +4,15 @@ import ColorsUI
 import TCA
 import VisionType
 
-extension VisionTypes {
+extension LearnAboutVisionTypes {
 
   public struct Screen: View {
 
-    public init(store: StoreOf<VisionTypes>) {
+    public init(store: StoreOf<LearnAboutVisionTypes>) {
       self.store = store
     }
 
-    private let store: StoreOf<VisionTypes>
+    private let store: StoreOf<LearnAboutVisionTypes>
     private let explicitSelectionAnimation = Animation.spring()
 
     public var body: some View {
@@ -38,18 +38,12 @@ extension VisionTypes {
             selectedVision: viewStore.binding(\.$vision)
           )
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-          StartCameraButton(
-            action: { viewStore.send(.pressedStartCamera) }
-          )
-          .scenePadding([.horizontal, .bottom])
-        }
       }
     }
   }
 }
 
-extension VisionTypes.Screen {
+extension LearnAboutVisionTypes.Screen {
   fileprivate struct Strings {
     static let headline = String(
       localized: "VisionTypes.Headline",
@@ -60,13 +54,13 @@ extension VisionTypes.Screen {
 }
 
 #if DEBUG
-struct VisionTypesScreen_Previews: PreviewProvider {
+struct LearnAboutVisionTypesScreen_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      VisionTypes.Screen(
+      LearnAboutVisionTypes.Screen(
         store: .init(
           initialState: .init(),
-          reducer: VisionTypes()
+          reducer: LearnAboutVisionTypes()
         )
       )
     }

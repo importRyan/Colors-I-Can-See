@@ -2,7 +2,7 @@
 
 import Camera
 import ColorsFoundation
-import Onboarding
+import Learn
 import TCA
 
 public struct Tabs: ReducerProtocol {
@@ -16,12 +16,12 @@ public struct Tabs: ReducerProtocol {
   public struct State: Equatable, Hashable {
     public var currentTab: Tab
     public var cameraTab: Camera.State
-    public var learnTab: OnboardingFlow.Coordinator.State
+    public var learnTab: LearnAboutVisionTypes.State
 
     public init(
       initialTab: Tab,
       cameraTab: Camera.State,
-      learnTab: OnboardingFlow.Coordinator.State
+      learnTab: LearnAboutVisionTypes.State
     ) {
       self.currentTab = initialTab
       self.cameraTab = cameraTab
@@ -31,7 +31,7 @@ public struct Tabs: ReducerProtocol {
 
   public enum Action: Equatable {
     case selectTab(Tab)
-    case learn(OnboardingFlow.Coordinator.Action)
+    case learn(LearnAboutVisionTypes.Action)
     case camera(Camera.Action)
   }
 
@@ -58,7 +58,7 @@ public struct Tabs: ReducerProtocol {
     Scope(
       state: \.learnTab,
       action: /Action.learn,
-      OnboardingFlow.Coordinator.init
+      LearnAboutVisionTypes.init
     )
     Scope(
       state: \.cameraTab,

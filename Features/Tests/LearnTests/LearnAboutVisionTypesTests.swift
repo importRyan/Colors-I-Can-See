@@ -4,14 +4,14 @@ import TCA
 import VisionType
 import XCTest
 
-@testable import Onboarding
+@testable import Learn
 
-final class VisionTypesTests: XCTestCase {
+final class LearnAboutVisionTypesTests: XCTestCase {
 
   func testEditsVisionSimulationSelection() {
     let store = TestStore(
       initialState: .init(vision: .tritan),
-      reducer: VisionTypes()
+      reducer: LearnAboutVisionTypes()
     )
     store.send(.binding(.set(\.$vision, .deutan))) {
       $0.vision = .deutan
@@ -23,7 +23,7 @@ final class VisionTypesTests: XCTestCase {
 
   func testAcceptsInjectedVisionSimulation() {
     let input = VisionType.tritan
-    let state = VisionTypes.State(vision: input)
+    let state = LearnAboutVisionTypes.State(vision: input)
     XCTAssertNoDifference(input, state.vision)
   }
 }

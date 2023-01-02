@@ -45,9 +45,9 @@
 		94DC759128D51DAC00F421B5 = {
 			isa = PBXGroup;
 			children = (
-				94A6A89B2962D8CE00E9EF35 /* ColorsFoundation */,
 				940F2453293EB0C300B40C74 /* Root.xctestplan */,
 				94CFB45B29469ABE00EDAE7B /* ColorVision */,
+				94A6A89B2962D8CE00E9EF35 /* ColorsFoundation */,
 				94DC75AC28D5236A00F421B5 /* ColorsUI */,
 				94E2A682294910C600D02046 /* Clients */,
 				94DC75AD28D5248A00F421B5 /* Features */,

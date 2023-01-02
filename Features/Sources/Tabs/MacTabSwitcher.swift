@@ -11,19 +11,25 @@ extension Tabs {
     var body: some ToolbarContent {
       ToolbarItem(placement: .navigation) {
         WithViewStore(store.scope(state: \.currentTab)) { viewStore in
-          Picker(selection: viewStore.binding(get: { $0 }, send: Action.selectTab)) {
-            ForEach(Tab.allCases) { tab in
-              tab.label()
-                .tag(tab)
+          Picker(
+            selection: viewStore.binding(get: { $0 }, send: Action.selectTab),
+            content: { tabOptions },
+            label: {
+              viewStore.state.label()
                 .labelStyle(TitleAndIconLabelStyle())
             }
-          } label: {
-            viewStore.state.label()
-              .labelStyle(TitleAndIconLabelStyle())
-          }
+          )
           .pickerStyle(.menu)
           .controlSize(.large)
         }
+      }
+    }
+
+    private var tabOptions: some View {
+      ForEach(Tab.allCases) { tab in
+        tab.label()
+          .tag(tab)
+          .labelStyle(TitleAndIconLabelStyle())
       }
     }
   }
