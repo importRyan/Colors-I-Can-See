@@ -1,7 +1,9 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
-import ColorVision
+import CPUColorVisionSimulation
+import ColorVectors
 import SwiftUI
+import VisionType
 
 extension Gradient {
   public static func rainbow(in vision: VisionType) -> Self {
