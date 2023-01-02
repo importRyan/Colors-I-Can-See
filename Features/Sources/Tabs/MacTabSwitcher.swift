@@ -23,6 +23,9 @@ extension Tabs {
           .controlSize(.large)
         }
       }
+      ToolbarItem(placement: .navigation) {
+        Color.clear
+      }
     }
 
     private var tabOptions: some View {

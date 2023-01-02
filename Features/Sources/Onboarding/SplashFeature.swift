@@ -13,11 +13,13 @@ public struct Splash: ReducerProtocol {
 
   public enum Action: Equatable {
     case onAppear
-    case pressedNext
-    case send(SendAction)
+    case pressedLearn
+    case pressedCamera
+    case forParent(AscendingAction)
 
-    public enum SendAction: Equatable {
-      case next
+    public enum AscendingAction: Equatable {
+      case pressedLearn
+      case pressedCamera
     }
   }
 
@@ -27,10 +29,11 @@ public struct Splash: ReducerProtocol {
       case .onAppear:
         state.didAppear = true
         return .none
-      case .pressedNext:
-        return Effect(value: .send(.next))
-          .animation(.easeIn(duration: 5))
-      case .send:
+      case .pressedLearn:
+        return .send(.forParent(.pressedLearn))
+      case .pressedCamera:
+        return .send(.forParent(.pressedCamera))
+      case .forParent:
         return .none
       }
     }

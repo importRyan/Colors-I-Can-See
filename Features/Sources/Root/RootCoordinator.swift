@@ -3,6 +3,7 @@
 import ColorsUI
 import TCA
 import Tabs
+import Onboarding
 import VisionType
 
 public struct Root: ReducerProtocol {
@@ -12,11 +13,13 @@ public struct Root: ReducerProtocol {
   public enum State: Equatable, Hashable {
     case initialization
     case tabs(Tabs.State)
+    case onboarding(Onboarding.Splash.State)
   }
 
   public enum Action: Equatable {
     case initialization(Initialization.Action)
     case tabs(Tabs.Action)
+    case onboarding(Onboarding.Splash.Action)
   }
 
   public var body: some ReducerProtocol<State, Action> {
@@ -30,6 +33,10 @@ public struct Root: ReducerProtocol {
       switch action {
 
       case .initialization(.complete):
+        state = .onboarding(.init())
+        return .none
+
+      case .onboarding(.forParent(.pressedLearn)):
         state = .tabs(
           .init(
             initialTab: .learn,
@@ -39,7 +46,17 @@ public struct Root: ReducerProtocol {
         )
         return .none
 
-      case .tabs, .initialization:
+      case .onboarding(.forParent(.pressedCamera)):
+        state = .tabs(
+          .init(
+            initialTab: .camera,
+            cameraTab: .init(vision: .deutan),
+            learnTab: .init(vision: .deutan)
+          )
+        )
+        return .none
+
+      case .tabs, .initialization, .onboarding:
         return .none
       }
     }
@@ -58,6 +75,11 @@ public struct Root: ReducerProtocol {
       state: /State.initialization,
       action: /Action.initialization,
       Initialization.init
+    )
+    Scope(
+      state: /State.onboarding,
+      action: /Action.onboarding,
+      Onboarding.Splash.init
     )
   }
 
@@ -80,6 +102,17 @@ public struct Root: ReducerProtocol {
           state: /State.initialization,
           action: Action.initialization,
           then: Initialization.Screen.init
+        )
+        CaseLet(
+          state: /State.onboarding,
+          action: Action.onboarding,
+          then: { store in
+            Color.clear
+              .toolbar { ToolbarItem { Color.clear } }
+              .sheet(isPresented: .constant(true)) {
+                Onboarding.Splash.Screen(store: store)
+              }
+          }
         )
       }
     }

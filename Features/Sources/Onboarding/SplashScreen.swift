@@ -52,10 +52,18 @@ extension Splash {
           }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-          LargeCTAButton(
-            Strings.cta,
-            action: { viewStore.send(.pressedNext) }
-          )
+          VStack {
+            LargeCTAButton(
+              Strings.ctaCamera,
+              action: { viewStore.send(.pressedCamera) }
+            )
+            .padding(.bottom)
+            
+            LargeCTAButton(
+              Strings.ctaLearn,
+              action: { viewStore.send(.pressedLearn) }
+            )
+          }
           .scenePadding([.horizontal, .bottom])
         }
         .onAppear {
@@ -70,15 +78,8 @@ extension Splash {
 
 extension Splash {
   struct Strings {
-    static let headline = String(
-      localized: "Splash.Headline",
-      defaultValue: "Many of use see differently",
-      bundle: .module
-    )
-    static let cta = String(
-      localized: "Splash.CTA",
-      defaultValue: "Learn more",
-      bundle: .module
-    )
+    static let headline = String(localized: "Splash.Headline", bundle: .module)
+    static let ctaLearn = String(localized: "Splash.CTALearn", bundle: .module)
+    static let ctaCamera = String(localized: "Splash.CTACamera", bundle: .module)
   }
 }
