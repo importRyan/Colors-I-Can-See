@@ -1,53 +1,6 @@
-// Copyright 2022 by Ryan Ferrell. @importRyan
+// Copyright © 2023 by Ryan Ferrell. GitHub: importRyan
 
 import Foundation
-import SwiftUI
-
-public enum VisionType: CaseIterable, Sendable {
-  case typical, deutan, protan, tritan, monochromat
-
-  public static let allColorBlindCases: [Self] = [
-    .deutan, .protan, .tritan, .monochromat
-  ]
-}
-
-extension VisionType: Identifiable {
-  public var id: Self { self }
-}
-
-extension VisionType {
-  init?(rank: Int) {
-    if let known = Self.allColorBlindCases.first(where: { $0.rank == rank }) {
-      self = known
-    } else {
-      return nil
-    }
-  }
-
-  public var rank: Int {
-    switch self {
-    case .typical: return 0
-    case .deutan: return 1
-    case .protan: return 2
-    case .tritan: return 3
-    case .monochromat: return 4
-    }
-  }
-  public func nextMoreCommonVision() -> Self {
-    Self(rank: self.rank - 1) ?? .typical
-  }
-  public func nextLessCommonVision() -> Self {
-    Self(rank: self.rank + 1) ?? .monochromat
-  }
-  @discardableResult
-  public mutating func moreCommon() -> Self {
-    Self(rank: self.rank - 1) ?? .typical
-  }
-  @discardableResult
-  public mutating func lessCommon() -> Self {
-    Self(rank: self.rank + 1) ?? .monochromat
-  }
-}
 
 extension VisionType {
   public var localizedInfo: LocalizedInformation {

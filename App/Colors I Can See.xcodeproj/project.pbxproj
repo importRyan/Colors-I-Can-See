@@ -45,8 +45,8 @@
 			isa = PBXGroup;
 			children = (
 				940F2453293EB0C300B40C74 /* Root.xctestplan */,
-				94DC75AC28D5236A00F421B5 /* ColorsUI */,
 				94CFB45B29469ABE00EDAE7B /* ColorVision */,
+				94DC75AC28D5236A00F421B5 /* ColorsUI */,
 				94E2A682294910C600D02046 /* Clients */,
 				94DC75AD28D5248A00F421B5 /* Features */,
 				94DC759C28D51DAD00F421B5 /* Colors I Can See */,

@@ -23,18 +23,6 @@ public struct HSV: Equatable {
   public static let zero = HSV(0, 0, 0)
 }
 
-import SwiftUI
-
-extension Color {
-  public init(hsv: HSV) {
-    self.init(
-      hue: Double(hsv.hue),
-      saturation: Double(hsv.sat),
-      brightness: Double(hsv.val)
-    )
-  }
-}
-
 extension RGBVector {
   /// Assuming 0...1 clamped values
   public init(hsv: HSV) {

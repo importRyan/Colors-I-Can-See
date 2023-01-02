@@ -3,14 +3,14 @@
 import Foundation
 
 extension RGBVector {
-  func encodeGammaSRGB() -> Self {
+  public func encodeGammaSRGB() -> Self {
     self
       .clamped(lowerBound: .zero, upperBound: .one)
       .map(\.srgbEncoded)
       .clamped(lowerBound: .zero, upperBound: .one)
   }
 
-  func decodeGammaSRGB() -> Self {
+  public func decodeGammaSRGB() -> Self {
     self
       .clamped(lowerBound: .zero, upperBound: .one)
       .map(\.srgbDecoded)
@@ -20,7 +20,7 @@ extension RGBVector {
 
 
 extension ColorChannel {
-  var srgbDecoded: Self {
+  public var srgbDecoded: Self {
     if self > Gamma.k_04045 {
       let shiftedScaled = (self + Gamma.k_055) / Gamma.k1_055
       return pow(shiftedScaled, Gamma.k2_4)
@@ -28,7 +28,7 @@ extension ColorChannel {
     return self / Gamma.k12_92
   }
   
-  var srgbEncoded: Self {
+  public var srgbEncoded: Self {
     if self > Gamma.k_0031308 {
       let power = pow(self, Gamma.k_416x)
       return Gamma.k1_055 * power - Gamma.k_055

@@ -1,5 +1,6 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
+import ColorVectors
 import Foundation
 import simd
 
@@ -11,11 +12,18 @@ import simd
 ///
 /// Both Firefox and Google simulate a little brighter, with Firefox using NTSA luma (i.e., NTSC constants without gamma decoding).
 ///
-struct MonochromacyApproximationTransforms {
-  static let generalized: Simulation = { input, _ -> RGBVector in
+public struct MonochromacyApproximationTransforms {
+  public static let generalized: (RGBVector, Double) -> RGBVector = { input, _ -> RGBVector in
     let linear = input.decodeGammaSRGB()
-    let xyz_linearRGB_Y = simd_float3(0.2126, 0.7152, 0.0722)
-    let xyz_y = simd_dot(xyz_linearRGB_Y, linear)
+    let xyz_y = simd_dot(.xyz_linearRGB_Y, linear)
     return .init(repeating: xyz_y.srgbEncoded)
   }
+
+  public static let matrixTransform = simd_float3x3(rows: [
+    .xyz_linearRGB_Y, .xyz_linearRGB_Y, .xyz_linearRGB_Y
+  ])
+}
+
+extension simd_float3 {
+  public static let xyz_linearRGB_Y = simd_float3(0.2126, 0.7152, 0.0722)
 }

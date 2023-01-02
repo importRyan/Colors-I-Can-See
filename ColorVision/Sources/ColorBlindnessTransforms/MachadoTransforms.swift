@@ -1,25 +1,26 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
+import ColorVectors
 import Foundation
 import simd
 
 /// [Citation](https://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html)
 ///
-struct MachadoTransforms {
+public struct MachadoTransforms {
 
-  static let protan: Simulation = { input, severity -> RGBVector in
+  public static let protan: (RGBVector, Double) -> RGBVector = { input, severity in
     let level = Self.getSeverityLevel(severity)
     let matrix = Self.protanMatrices[level]!
     return simd_mul(matrix, input)
   }
 
-  static let deutan: Simulation = { input, severity -> RGBVector in
+  public static let deutan: (RGBVector, Double) -> RGBVector = { input, severity in
     let level = Self.getSeverityLevel(severity)
     let matrix = Self.deutanMatrices[level]!
     return simd_mul(matrix, input)
   }
 
-  static let tritan: Simulation = { input, severity -> RGBVector in
+  public static let tritan: (RGBVector, Double) -> RGBVector = { input, severity in
     let level = Self.getSeverityLevel(severity)
     let matrix = Self.tritanMatrices[level]!
     return simd_mul(matrix, input)
@@ -31,14 +32,8 @@ struct MachadoTransforms {
     return Int(clamped)
   }
 
-  private static let identityMatrix = simd_float3x3(rows: [
-    SIMD3( 1.000000,    0.000000,   -0.000000),
-    SIMD3( 0.000000,    1.000000,    0.000000),
-    SIMD3(-0.000000,   -0.000000,    1.000000)
-  ])
-
-  private static let protanMatrices: [Int: simd_float3x3] = [
-    0: identityMatrix,
+  static let protanMatrices: [Int: simd_float3x3] = [
+    0: .identity,
     1: simd_float3x3(rows: [
       SIMD3( 0.856167,   0.182038,   -0.038205),
       SIMD3( 0.029342,   0.955115,    0.015544),
@@ -91,8 +86,8 @@ struct MachadoTransforms {
     ])
   ]
 
-  private static let deutanMatrices: [Int: simd_float3x3] = [
-    0: identityMatrix,
+  static let deutanMatrices: [Int: simd_float3x3] = [
+    0: .identity,
     1: simd_float3x3(rows: [
       SIMD3( 0.866435,   0.177704,   -0.044139),
       SIMD3( 0.049567,   0.939063,    0.011370),
@@ -145,8 +140,8 @@ struct MachadoTransforms {
     ])
   ]
 
-  private static let tritanMatrices: [Int: simd_float3x3] = [
-    0: identityMatrix,
+  static let tritanMatrices: [Int: simd_float3x3] = [
+    0: .identity,
     1: simd_float3x3(rows: [
       SIMD3( 0.926670,    0.092514,   -0.019184),
       SIMD3( 0.021191,    0.964503,    0.014306),

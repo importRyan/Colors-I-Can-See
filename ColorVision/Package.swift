@@ -2,10 +2,8 @@
 
 import PackageDescription
 
-let packageName = "ColorVision"
-
 let package = Package(
-  name: packageName,
+  name: "ColorVision",
   defaultLocalization: "en",
   platforms: [
     .iOS(.v16),
@@ -15,16 +13,39 @@ let package = Package(
   ],
   products: [
     .library(
-      name: packageName,
-      targets: [packageName]
+      name: "VisionType",
+      targets: ["VisionType"]
     ),
+    .library(
+      name: "CPUColorVisionSimulation",
+      targets: ["CPUColorVisionSimulation", "VisionType", "ColorVectors"]
+    ),
+    .library(
+      name: "MetalColorVisionSimulation",
+      targets: ["MetalColorVisionSimulation", "VisionType"]
+    )
   ],
   dependencies: [],
   targets: [
     .target(
-      name: packageName,
-      dependencies: [],
-      path: "Sources"
+      name: "VisionType",
+      dependencies: []
+    ),
+    .target(
+      name: "ColorVectors",
+      dependencies: []
+    ),
+    .target(
+      name: "ColorBlindnessTransforms",
+      dependencies: ["ColorVectors", "VisionType"]
+    ),
+    .target(
+      name: "CPUColorVisionSimulation",
+      dependencies: ["ColorVectors", "ColorBlindnessTransforms", "VisionType"]
+    ),
+    .target(
+      name: "MetalColorVisionSimulation",
+      dependencies: ["ColorVectors", "ColorBlindnessTransforms", "VisionType"]
     )
   ]
 )
