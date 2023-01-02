@@ -5,7 +5,10 @@ import Foundation
 
 final class AVCameraCapture: NSObject {
 
-  init(queue: DispatchQueue, didCaptureFrame: @escaping (CMSampleBuffer) -> Void) {
+  init(
+    queue: DispatchQueue,
+    didCaptureFrame: @escaping (CMSampleBuffer) -> Void
+  ) {
     self.didCaptureFrame = didCaptureFrame
     self.queue = queue
   }
@@ -15,6 +18,21 @@ final class AVCameraCapture: NSObject {
   var currentInputDevice: AVCaptureDevice?
   var queue: DispatchQueue
   var didCaptureFrame: (CMSampleBuffer) -> Void
+}
+
+extension AVCameraCapture: AVCaptureVideoDataOutputSampleBufferDelegate {
+  func captureOutput(
+    _ output: AVCaptureOutput,
+    didOutput sampleBuffer: CMSampleBuffer,
+    from connection: AVCaptureConnection
+  ) {
+    didCaptureFrame(sampleBuffer)
+  }
+}
+
+// MARK: - Intents
+
+extension AVCameraCapture {
 
   func startCamera() async throws -> CameraSuccess {
     try await withCheckedThrowingContinuation { continuation in
@@ -51,29 +69,23 @@ final class AVCameraCapture: NSObject {
   }
 }
 
-extension AVCameraCapture: AVCaptureVideoDataOutputSampleBufferDelegate {
-  func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-    didCaptureFrame(sampleBuffer)
-  }
-}
-
 // MARK: - Setup
 
 extension AVCameraCapture {
   private func discoverDevices() {
-    #if os(macOS)
+#if os(macOS)
     let discoverySession = AVCaptureDevice.DiscoverySession(
       deviceTypes: [.builtInWideAngleCamera, .externalUnknown],
       mediaType: .video,
       position: .front
     )
-    #elseif os(iOS)
+#elseif os(iOS)
     let discoverySession = AVCaptureDevice.DiscoverySession(
       deviceTypes: [.builtInTripleCamera, .builtInDualCamera],
       mediaType: .video,
       position: .back
     )
-    #endif
+#endif
     self.devices = discoverySession.devices
   }
 

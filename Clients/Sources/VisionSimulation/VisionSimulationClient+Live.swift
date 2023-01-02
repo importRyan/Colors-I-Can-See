@@ -1,7 +1,6 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import AsyncAlgorithms
-import Combine
 import MetalKit
 import TCA
 import VisionType
@@ -39,7 +38,7 @@ extension VisionSimulationClient {
       },
       cameraChangeSimulation: { newSimulation in
         metal?.dispatchQueue.sync {
-          metal?.filter = newSimulation
+          metal?.realtimeFilter = newSimulation
         }
       },
       errors: {
@@ -75,7 +74,7 @@ private func initializeInternalSingletons(
         queue: queue,
         didCaptureFrame: { buffer in
           do {
-            try metal.getTexture(fromCapturedFrame: buffer)
+            try metal.getRealtimeTexture(fromCapturedFrame: buffer)
           } catch {
             Task { await errors.send(error) }
           }

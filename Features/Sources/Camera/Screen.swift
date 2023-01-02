@@ -40,7 +40,7 @@ extension Camera {
           case .needsSetup: EmptyView()
           case .permissionsNotGranted: Text("Camera.InstructionsToRescuePermissionsDenied", bundle: .module)
           case .settingUp: ProgressView()
-          case .streaming, .resuming, .paused: CameraFeed()
+          case .streaming, .resuming, .paused: CameraFeedView()
           }
         }
         .animation(.easeIn, value: viewStore.state)

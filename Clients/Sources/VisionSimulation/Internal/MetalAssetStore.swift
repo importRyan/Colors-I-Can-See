@@ -1,73 +1,42 @@
 // Copyright © 2023 by Ryan Ferrell. GitHub: importRyan
 
 import Foundation
-import Metal
+import MetalKit
 import MetalColorVisionSimulation
 import VisionType
-import CoreVideo
-import CoreMedia.CMSampleBuffer
 
 final class MetalAssetStore {
 
   let device: MTLDevice
   let dispatchQueue: DispatchQueue
   let library: MetalColorVisionSimulationLibrary
+
   let computeCommandQueue: MTLCommandQueue
 
   let realtimeCommandQueue: MTLCommandQueue
   let realtimeRenderPipelineState: MTLRenderPipelineState
-  var realtimeInputTexture: MTLTexture?
   let realtimeTextureCache: CVMetalTextureCache
-  var realtimeRender: (() -> Void)? = nil
-
-  var filter: VisionType
+  var realtimeInputTexture: MTLTexture?
+  var realtimeFilter: VisionType
+  var realtimeRenderDelegate: (() -> Void)? = nil
 
   init(
     initialSimulation: VisionType,
     queue: DispatchQueue
   ) throws {
     self.device = try CreateSystemDefaultDevice()
+    self.dispatchQueue = queue
     self.library = try MetalColorVisionSimulationLibrary(device: device)
+    self.realtimeFilter = initialSimulation
+
     self.computeCommandQueue = try device.makeCommandQueue()
     self.realtimeCommandQueue = try device.makeCommandQueue()
-    self.dispatchQueue = queue
-    self.filter = initialSimulation
     self.realtimeRenderPipelineState = try CreateRealTimePipelineState(device, library)
     self.realtimeTextureCache = try CreateRealTimeTextureCache(device)
   }
 }
 
-// MARK: - Real Time Simulation
-
-extension MetalAssetStore {
-  func getTexture(fromCapturedFrame buffer: CMSampleBuffer) throws {
-    guard let imageBuffer = buffer.imageBuffer else {
-      throw MetalError.imageBufferNotAvailable
-    }
-    var cvMetalTexture: CVMetalTexture?
-    let textureResult = CVMetalTextureCacheCreateTextureFromImage(
-      kCFAllocatorDefault,
-      self.realtimeTextureCache,
-      imageBuffer,
-      nil,
-      .bgra8Unorm,
-      CVPixelBufferGetWidth(imageBuffer),
-      CVPixelBufferGetHeight(imageBuffer),
-      0,
-      &cvMetalTexture
-    )
-    guard
-      textureResult == kCVReturnSuccess,
-      let cvMetalTexture,
-      let capturedTexture = CVMetalTextureGetTexture(cvMetalTexture) else {
-      throw MetalError.imageBufferTextureUnavailable
-    }
-    self.realtimeInputTexture = capturedTexture
-    self.realtimeRender?()
-  }
-}
-
-// MARK: - Helpers
+// MARK: - Init Helpers
 
 fileprivate func CreateSystemDefaultDevice() throws -> MTLDevice {
   guard let device = MTLCreateSystemDefaultDevice() else {

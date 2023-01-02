@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-public struct CameraFeed: View {
+public struct CameraFeedView: View {
   public init() { }
   public var body: some View {
 #if targetEnvironment(simulator)
@@ -26,30 +26,27 @@ public struct CameraFeed: View {
 #if os(iOS)
 struct iOSHostedMetalCamera: UIViewControllerRepresentable {
   let metal: MetalAssetStore
-  func makeUIViewController(context: Context) -> MTKViewController {
+  func makeUIViewController(context: Context) -> MTKViewHostController {
     .init(metal: metal)
   }
-  func updateUIViewController(_ vc: MTKViewController, context: Context) {
+  func updateUIViewController(_ vc: MTKViewHostController, context: Context) {
   }
 }
 #elseif os(macOS)
 struct macOSHostedMetalCamera: NSViewControllerRepresentable {
   let metal: MetalAssetStore
-  func makeNSViewController(context: Context) -> MTKViewController {
+  func makeNSViewController(context: Context) -> MTKViewHostController {
     .init(metal: metal)
   }
-  func updateNSViewController(_ vc: MTKViewController, context: Context) {
+  func updateNSViewController(_ vc: MTKViewHostController, context: Context) {
   }
 }
 #endif
 
-
-
 #if DEBUG
 struct SimulatorMock: View {
-
   var body: some View {
-    Text("Mock camera for iOS simulator.")
+    Text(verbatim: "Mock camera for iOS simulator.")
       .foregroundStyle(.secondary)
       .font(.caption)
       .frame(maxWidth: .infinity, maxHeight: .infinity)

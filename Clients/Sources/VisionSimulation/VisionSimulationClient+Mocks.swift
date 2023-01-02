@@ -14,7 +14,8 @@ extension VisionSimulationClient {
     cameraRestart: unimplemented("\(Self.self).cameraRestart"),
     cameraStop: unimplemented("\(Self.self).cameraStop"),
     cameraChangeSimulation: unimplemented("\(Self.self).changeSimulation"),
-    errors: unimplemented("\(Self.self).errors")
+    errors: unimplemented("\(Self.self).errors"),
+    computeSimulations: unimplemented("\(Self.self).computeSimulations")
   )
 
 
