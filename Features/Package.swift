@@ -37,6 +37,7 @@ let package = Package(
     .target(name: "Images", dependencies: [
       .Clients.VisionSimulation,
       .Internal.ColorsUI,
+      .Internal.Foundation,
       .External.ComposableArchitecture,
       .External.TCACoordinators,
     ]),

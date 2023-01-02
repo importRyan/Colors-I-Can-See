@@ -14,11 +14,35 @@ extension ImageGrid {
     private let store: StoreOf<ImageGrid>
 
     public var body: some View {
-      ScrollView {
-
+      WithViewStore(store) { viewStore in
+        ScrollView {
+          EmptyGridPrompt(
+            pressedImportImage: {
+              ViewStore(store.stateless).send(.pressedImportImage)
+            }
+          )
+        }
+        .navigationTitle("Images")
+        .fileImporter(
+          isPresented: viewStore.binding(\.$showFileImporter),
+          allowedContentTypes: [.image],
+          onCompletion: { completion in
+            if case let .success(url) = completion {
+              viewStore.send(.importImageAt(url))
+            }
+          }
+        )
       }
-      .navigationTitle("Images")
       .onAppear { ViewStore(store.stateless).send(.onAppear) }
     }
+  }
+}
+
+struct EmptyGridPrompt: View {
+
+  let pressedImportImage: () -> Void
+
+  var body: some View {
+    CButton(action: pressedImportImage, label: "Import")
   }
 }
