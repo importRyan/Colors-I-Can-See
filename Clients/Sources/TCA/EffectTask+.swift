@@ -2,12 +2,20 @@
 
 import Foundation
 
+extension TaskPriority {
+  /// .userInitiated
+  public static let defaultEffectTaskPriority: TaskPriority = .userInitiated
+}
+
 extension EffectTask {
 
   /// Semantic convenience to dispatch a new action into a store
   ///
-  public static func send(_ action: Output) -> EffectTask<Output> {
-    EffectTask.task { action }
+  public static func send(
+    _ action: Output,
+    priority: TaskPriority = .defaultEffectTaskPriority
+  ) -> EffectTask<Output> {
+    EffectTask.task(priority: priority) { action }
   }
 
   /// Immediately evaluates a condition to dispatch a new action into a store
@@ -15,12 +23,14 @@ extension EffectTask {
   public static func `if`(
     _ condition: Bool,
     then trueAction: Output,
-    else falseAction: Output? = nil
+    thenPriority: TaskPriority = .defaultEffectTaskPriority,
+    else falseAction: Output? = nil,
+    elsePriority: TaskPriority = .defaultEffectTaskPriority
   ) -> EffectTask<Output> {
     if condition {
-      return .send(trueAction)
+      return .send(trueAction, priority: thenPriority)
     } else if let falseAction {
-      return .send(falseAction)
+      return .send(falseAction, priority: elsePriority)
     } else {
       return .none
     }
@@ -31,12 +41,14 @@ extension EffectTask {
   public static func ifLet<V>(
     _ value: V?,
     then someAction: (V) -> Output,
-    else noneAction: Output? = nil
+    thenPriority: TaskPriority = .defaultEffectTaskPriority,
+    else noneAction: Output? = nil,
+    elsePriority: TaskPriority = .defaultEffectTaskPriority
   ) -> EffectTask<Output> {
     if let value {
-      return .send(someAction(value))
+      return .send(someAction(value), priority: thenPriority)
     } else if let noneAction {
-      return .send(noneAction)
+      return .send(noneAction, priority: elsePriority)
     } else {
       return .none
     }
