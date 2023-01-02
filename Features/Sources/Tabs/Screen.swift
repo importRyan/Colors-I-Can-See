@@ -93,11 +93,3 @@ extension Tabs.Screen {
     VStack { }
   }
 }
-
-public protocol SelfIdentifiable: Hashable, Identifiable {
-  var id: Self { get }
-}
-extension SelfIdentifiable {
-  public var id: Self { self }
-}
-

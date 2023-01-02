@@ -14,10 +14,7 @@ let package = Package(
     .watchOS(.v9),
   ],
   products: [
-    .library(
-      name: packageName,
-      targets: [packageName]
-    ),
+    .library(name: packageName, targets: [packageName]),
   ],
   dependencies: [
     .package(path: "../ColorVision"),

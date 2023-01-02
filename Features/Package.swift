@@ -14,6 +14,7 @@ let package = Package(
     .library(name: "Tabs", targets: ["Tabs"]),
   ],
   dependencies: [
+    .package(path: "../ColorsFoundation"),
     .package(path: "../ColorsUI"),
     .package(path: "../ColorVision"),
     .package(path: "../Clients"),
@@ -26,6 +27,7 @@ let package = Package(
     .target(name: "Root", dependencies: [
       .Clients.VisionSimulation,
       .Internal.ColorsUI,
+      .Internal.Foundation,
       .External.ComposableArchitecture,
       .External.TCACoordinators,
       "Tabs",
@@ -84,6 +86,7 @@ extension Target.Dependency {
 
   struct Internal {
     static let ColorsUI = Target.Dependency(stringLiteral: "ColorsUI")
+    static let Foundation = Target.Dependency(stringLiteral: "ColorsFoundation")
     static let Models = Target.Dependency.product(name: "VisionType", package: "ColorVision")
   }
 
