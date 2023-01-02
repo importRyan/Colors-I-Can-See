@@ -37,8 +37,10 @@ extension Tabs {
       )
       .tag(Tab.learn)
       .tabItem { CLabel("Learn", symbol: .learn) }
+#if os(iOS)
       .toolbarBackground(.visible, for: .tabBar)
       .toolbarBackground(.bar, for: .tabBar)
+#endif
     }
 
     private var cameraTab: some View {
@@ -50,16 +52,20 @@ extension Tabs {
       )
       .tag(Tab.camera)
       .tabItem { CLabel("Camera", symbol: .camera) }
+#if os(iOS)
       .toolbarBackground(.visible, for: .tabBar)
       .toolbarBackground(Material.ultraThin, for: .tabBar)
+#endif
     }
 
     private var imageTab: some View {
       VStack { }
         .tag(Tab.image)
         .tabItem { CLabel("Images", symbol: .image) }
-        .toolbarBackground(.visible, for: .tabBar)
-        .toolbarBackground(.bar, for: .tabBar)
+#if os(iOS)
+      .toolbarBackground(.visible, for: .tabBar)
+      .toolbarBackground(.bar, for: .tabBar)
+#endif
     }
   }
 }

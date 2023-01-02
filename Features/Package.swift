@@ -36,12 +36,16 @@ let package = Package(
       .External.ComposableArchitecture,
       .External.TCACoordinators,
     ]),
-    .target(name: "Camera", dependencies: [
-      .Clients.VisionSimulation,
-      .External.ComposableArchitecture,
-      .Internal.ColorsUI,
-      .Internal.Models,
-    ]),
+    .target(
+      name: "Camera",
+      dependencies: [
+        .Clients.VisionSimulation,
+        .External.ComposableArchitecture,
+        .Internal.ColorsUI,
+        .Internal.Models,
+      ],
+      resources: [.process("Resources")]
+    ),
     .testTarget(name: "CameraTests", dependencies: [
       "Camera"
     ]),

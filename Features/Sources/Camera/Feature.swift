@@ -12,14 +12,26 @@ public struct Camera: ReducerProtocol {
   }
 
   public struct State: Equatable, Hashable {
-    public init(vision: VisionType, didStart: Bool = false) {
-      self.vision = vision
-      self.didStart = didStart
-    }
-
     @BindableState
     public var vision: VisionType
-    public var didStart: Bool
+    public var status: StreamingStatus
+
+    public init(
+      vision: VisionType,
+      status: StreamingStatus = .needsSetup
+    ) {
+      self.vision = vision
+      self.status = status
+    }
+
+    public enum StreamingStatus {
+      case needsSetup
+      case settingUp
+      case permissionsNotGranted
+      case streaming
+      case paused
+      case resuming
+    }
   }
 
   public enum Action: BindableAction, Equatable {
@@ -30,6 +42,7 @@ public struct Camera: ReducerProtocol {
     case startCamera
     case startCameraResult(Result<CameraSuccess, CameraError>)
     case resumeCamera
+    case resumeCameraComplete
     case pauseCamera
     case binding(BindingAction<State>)
   }
@@ -39,17 +52,23 @@ public struct Camera: ReducerProtocol {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        if case .success = visionSimulation.cameraAuthorizationStatus(),
-           state.didStart {
-          return .send(.resumeCamera)
-        } else {
+        guard case .success = visionSimulation.cameraAuthorizationStatus() else {
           return .send(.requestCameraPermissions)
+        }
+        switch state.status {
+        case .needsSetup: return .send(.requestCameraPermissions)
+        case .settingUp: return .none
+        case .permissionsNotGranted: return .none
+        case .streaming: return .none
+        case .paused: return .send(.resumeCamera)
+        case .resuming: return .none
         }
 
       case .onDisappear:
         return .send(.pauseCamera)
 
       case .requestCameraPermissions:
+        state.status = .settingUp
         return .run { send in
           let userPreference = await visionSimulation.cameraAuthorize()
           await send(.requestCameraPermissionsResult(userPreference))
@@ -59,30 +78,39 @@ public struct Camera: ReducerProtocol {
         return .send(.startCamera)
 
       case let .requestCameraPermissionsResult(.failure(error)):
+        state.status = .permissionsNotGranted
         print(error)
         return .none
 
       case .startCamera:
-        if state.didStart { return .none }
-        state.didStart = true
+        if state.status == .streaming { return .none }
         return .run { send in
           let result = await visionSimulation.cameraStart()
           await send(.startCameraResult(result))
         }
 
       case .startCameraResult(.success):
+        state.status = .streaming
         return .none
 
       case let .startCameraResult(.failure(error)):
         print(error)
+        state.status = .needsSetup
         return .none
 
       case .resumeCamera:
-        return .run { _ in
+        state.status = .resuming
+        return .run { send in
           await visionSimulation.cameraRestart()
+          await send(.resumeCameraComplete)
         }
 
+      case .resumeCameraComplete:
+        state.status = .streaming
+        return .none
+
       case .pauseCamera:
+        state.status = .paused
         return .run { _ in
           await visionSimulation.cameraStop()
         }

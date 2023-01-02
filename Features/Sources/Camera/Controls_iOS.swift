@@ -3,7 +3,7 @@
 import ColorsUI
 import VisionType
 
-struct CameraControls: View {
+struct Controls_iOS: View {
 
   @Binding var simulation: VisionType
 
@@ -31,7 +31,7 @@ struct CameraControls: View {
   }
 }
 
-extension CameraControls {
+extension Controls_iOS {
 
   private var simulationMenu: some View {
     ZStack {
@@ -40,12 +40,8 @@ extension CameraControls {
         .foregroundColor(.primary)
       Menu {
         Text("Swiping also changes simulations.")
-        Picker("Simulation", selection: $simulation) {
-          ForEach(VisionType.allCases) { vision in
-            Text(vision.localizedInfo.shortName)
-              .tag(vision)
-          }
-        }
+        SimulationPicker(simulation: $simulation)
+        .pickerStyle(.inline)
       } label: {
         Color.clear
       }

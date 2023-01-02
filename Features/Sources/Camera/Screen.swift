@@ -16,15 +16,33 @@ extension Camera {
     private let store: StoreOf<Camera>
 
     public var body: some View {
-      WithViewStore(store) { viewStore in
-        ZStack(alignment: .bottom) {
-          CameraFeed()
-          CameraControls(
-            simulation: viewStore.binding(\.$vision)
-          )
+      ZStack(alignment: .bottom) {
+        cameraFeed
+#if os(iOS)
+        WithViewStore(store) { viewStore in
+          Controls_iOS(simulation: viewStore.binding(\.$vision))
         }
-        .onAppear { viewStore.send(.onAppear) }
-        .onDisappear() { viewStore.send(.onDisappear) }
+#endif
+      }
+      .onAppear { ViewStore(store.stateless).send(.onAppear) }
+      .onDisappear() { ViewStore(store.stateless).send(.onDisappear) }
+#if os(macOS)
+      .toolbar { Controls_macOSToolbar(store: store) }
+      .toolbar(.visible, for: .windowToolbar)
+#endif
+    }
+
+    var cameraFeed: some View {
+      WithViewStore(store.actionless.scope(state: \.status)) { viewStore in
+        ZStack {
+          switch viewStore.state {
+          case .needsSetup: EmptyView()
+          case .permissionsNotGranted: Text("Camera.InstructionsToRescuePermissionsDenied", bundle: .module)
+          case .settingUp: ProgressView()
+          case .streaming, .resuming, .paused: CameraFeed()
+          }
+        }
+        .animation(.easeIn, value: viewStore.state)
       }
     }
   }
@@ -33,14 +51,12 @@ extension Camera {
 #if DEBUG
 struct CameraScreen_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
-      Camera.Screen(
-        store: .init(
-          initialState: .init(vision: .deutan),
-          reducer: Camera()
-        )
+    Camera.Screen(
+      store: .init(
+        initialState: .init(vision: .deutan),
+        reducer: Camera()
       )
-    }
+    )
   }
 }
 #endif

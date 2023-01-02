@@ -1,7 +1,7 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
-import VisionType
 import SwiftUI
+import VisionType
 
 extension VisionType {
   public var primaryColor: Color {

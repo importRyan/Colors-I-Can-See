@@ -46,8 +46,8 @@ final class MTKViewController: VC {
 
   override func viewWillAppear() {
     super.viewWillAppear()
-    mtkView.autoresizingMask = [.width, .height]
-    view.autoresizingMask = [.width, .height]
+    mtkView.translatesAutoresizingMaskIntoConstraints = false
+    view.pinToBounds(mtkView)
   }
 
 #elseif os(iOS)

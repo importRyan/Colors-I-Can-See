@@ -49,12 +49,11 @@ struct macOSHostedMetalCamera: NSViewControllerRepresentable {
 struct SimulatorMock: View {
 
   var body: some View {
-    ZStack {
-      Color.black
-      Text("Mock camera for iOS simulator.")
-        .foregroundStyle(.secondary)
-        .font(.caption)
-    }
+    Text("Mock camera for iOS simulator.")
+      .foregroundStyle(.secondary)
+      .font(.caption)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(.black)
   }
 }
 #endif

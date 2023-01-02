@@ -6,6 +6,9 @@ public enum SFSymbol: String, CaseIterable {
   case camera = "camera"
   case image = "photo"
   case learn = "book"
+  case play = "play"
+  case pause = "pause"
+  case visionSimulation = "eye"
 }
 
 extension SFSymbol {
@@ -14,6 +17,9 @@ extension SFSymbol {
     case .camera: return "Camera"
     case .image: return "Images"
     case .learn: return "Learn"
+    case .play: return "Play"
+    case .pause: return "Pause"
+    case .visionSimulation: return "Vision Simulation"
     }
   }
 }

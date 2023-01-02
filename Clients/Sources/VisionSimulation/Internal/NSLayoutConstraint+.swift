@@ -2,10 +2,15 @@
 
 #if canImport(UIKit)
 import UIKit
+typealias SomeView = UIView
+#elseif canImport(AppKit)
+import AppKit
+typealias SomeView = NSView
+#endif
 
 extension Array where Element == NSLayoutConstraint {
 
-  static func pinning(_ view: UIView, to parent: UIView) -> Self {
+  static func pinning(_ view: SomeView, to parent: SomeView) -> Self {
     [
       view.bottomAnchor.constraint(equalTo: parent.bottomAnchor),
       view.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
@@ -15,16 +20,15 @@ extension Array where Element == NSLayoutConstraint {
   }
 }
 
-extension UIView {
+extension SomeView {
 
-  func constrain(_ subview: UIView, constraints: () -> [NSLayoutConstraint] ) {
+  func constrain(_ subview: SomeView, constraints: () -> [NSLayoutConstraint] ) {
     subview.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate(constraints())
   }
 
-  func pinToBounds(_ subview: UIView) {
+  func pinToBounds(_ subview: SomeView) {
     subview.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate(.pinning(subview, to: self))
   }
 }
-#endif

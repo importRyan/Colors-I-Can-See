@@ -1,0 +1,4 @@
+"Camera.InstructionsToRescuePermissionsDenied" = "Open System Settings > Privacy > Camera to explore your surroundings in simulated color blindness.";
+"Camera.Resume" = "Resume Camera";
+"Camera.Pause" = "Pause Camera";
+"Camera.SelectVisionSimulationHelpTip" = "Choose a vision simulation for your camera feed";
