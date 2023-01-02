@@ -8,6 +8,10 @@ public struct Tabs: ReducerProtocol {
 
   public init() {}
 
+  public enum Tab: CaseIterable, SelfIdentifiable {
+    case learn, camera, image
+  }
+
   public struct State: Equatable, Hashable {
     public var currentTab: Tab
     public var cameraTab: Camera.State
@@ -60,11 +64,5 @@ public struct Tabs: ReducerProtocol {
       action: /Action.camera,
       Camera.init
     )
-  }
-}
-
-extension Tabs {
-  public enum Tab {
-    case learn, camera, image
   }
 }

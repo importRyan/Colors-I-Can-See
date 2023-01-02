@@ -15,6 +15,8 @@ extension Tabs {
 
     private let store: StoreOf<Tabs>
 
+#if os(iOS)
+    // Bottom tab bar style
     public var body: some View {
       WithViewStore(store.scope(state: \.currentTab)) { viewStore in
         TabView(selection: viewStore.binding(
@@ -22,50 +24,80 @@ extension Tabs {
           send: Tabs.Action.selectTab
         )) {
           learnTab
+            .tag(Tab.learn)
+            .tabItem(Tab.learn.label)
+            .toolbarBackground(.visible, for: .tabBar)
+            .toolbarBackground(.bar, for: .tabBar)
           cameraTab
+            .tag(Tab.camera)
+            .tabItem(Tab.camera.label)
+            .toolbarBackground(.visible, for: .tabBar)
+            .toolbarBackground(Material.ultraThin, for: .tabBar)
           imageTab
+            .tag(Tab.image)
+            .tabItem(Tab.image.label)
+            .toolbarBackground(.visible, for: .tabBar)
+            .toolbarBackground(.bar, for: .tabBar)
         }
       }
     }
 
-    private var learnTab: some View {
-      OnboardingFlow(
-        store: store.scope(
-          state: \.learnTab,
-          action: Action.learn
+#elseif os(macOS)
+    // Toolbar button switches whole window hierarchy
+    public var body: some View {
+      SwitchStore(store.scope(state: \.currentTab)) {
+        CaseLet(
+          state: /Tab.learn,
+          action: Action.learn,
+          then: { _ in learnTab }
         )
-      )
-      .tag(Tab.learn)
-      .tabItem { CLabel("Learn", symbol: .learn) }
-#if os(iOS)
-      .toolbarBackground(.visible, for: .tabBar)
-      .toolbarBackground(.bar, for: .tabBar)
-#endif
-    }
-
-    private var cameraTab: some View {
-      Camera.Screen(
-        store: store.scope(
-          state: \.cameraTab,
-          action: Action.camera
+        CaseLet(
+          state: /Tab.camera,
+          action: Action.camera,
+          then: { _ in cameraTab }
         )
-      )
-      .tag(Tab.camera)
-      .tabItem { CLabel("Camera", symbol: .camera) }
-#if os(iOS)
-      .toolbarBackground(.visible, for: .tabBar)
-      .toolbarBackground(Material.ultraThin, for: .tabBar)
-#endif
+        CaseLet(
+          state: /Tab.image,
+          action: Action.learn,
+          then: { _ in imageTab }
+        )
+      }
+      .toolbar { MacTabSwitcher(store: store) }
     }
-
-    private var imageTab: some View {
-      VStack { }
-        .tag(Tab.image)
-        .tabItem { CLabel("Images", symbol: .image) }
-#if os(iOS)
-      .toolbarBackground(.visible, for: .tabBar)
-      .toolbarBackground(.bar, for: .tabBar)
 #endif
-    }
   }
 }
+
+// MARK: - Glue
+
+extension Tabs.Screen {
+  private var learnTab: some View {
+    OnboardingFlow(
+      store: store.scope(
+        state: \.learnTab,
+        action: Tabs.Action.learn
+      )
+    )
+  }
+
+  private var cameraTab: some View {
+    Camera.Screen(
+      store: store.scope(
+        state: \.cameraTab,
+        action: Tabs.Action.camera
+      )
+    )
+  }
+
+  private var imageTab: some View {
+    VStack { }
+  }
+}
+
+public protocol SelfIdentifiable: Hashable, Identifiable {
+  var id: Self { get }
+}
+extension SelfIdentifiable {
+  public var id: Self { self }
+}
+
