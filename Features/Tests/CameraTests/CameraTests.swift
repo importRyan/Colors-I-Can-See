@@ -1,7 +1,7 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
-import ColorVision
 import TCA
+import VisionType
 import XCTest
 
 @testable import Camera
@@ -16,7 +16,7 @@ final class CameraTests: XCTestCase {
     )
 
     var changedSimulation: VisionType?
-    store.dependencies.visionSimulation.changeSimulation = { @MainActor vision in
+    store.dependencies.visionSimulation.cameraChangeSimulation = { @MainActor vision in
       changedSimulation = vision
     }
 

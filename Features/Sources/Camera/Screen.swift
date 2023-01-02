@@ -3,6 +3,7 @@
 import ColorsUI
 import TCA
 import VisionSimulation
+import VisionType
 
 extension Camera {
 
@@ -16,12 +17,14 @@ extension Camera {
 
     public var body: some View {
       WithViewStore(store) { viewStore in
-        ZStack(alignment: .topLeading) {
+        ZStack(alignment: .bottom) {
           CameraFeed()
-          CameraControlsView(
+          CameraControls(
             simulation: viewStore.binding(\.$vision)
           )
         }
+        .onAppear { viewStore.send(.onAppear) }
+        .onDisappear() { viewStore.send(.onDisappear) }
       }
     }
   }
