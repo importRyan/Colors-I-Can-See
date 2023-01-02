@@ -1,8 +1,8 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import ColorsUI
-import ColorVision
 import TCA
+import VisionType
 
 extension VisionTypes {
 

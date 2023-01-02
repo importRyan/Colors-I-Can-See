@@ -1,9 +1,9 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import ColorsUI
-import ColorVision
 import TCA
 import TCACoordinators
+import VisionType
 
 extension OnboardingFlow {
   public struct Coordinator: ReducerProtocol {

@@ -1,7 +1,7 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
-import ColorVision
 import TCA
+import VisionType
 import XCTest
 
 @testable import Onboarding

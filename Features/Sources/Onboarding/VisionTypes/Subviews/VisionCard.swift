@@ -1,7 +1,7 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
 import ColorsUI
-import ColorVision
+import VisionType
 
 struct VisionCard: View {
   let vision: VisionType
