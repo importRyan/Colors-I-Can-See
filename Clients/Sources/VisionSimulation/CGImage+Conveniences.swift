@@ -47,7 +47,13 @@ import UIKit
 extension [VisionType: CIImage] {
   public func asPlatformImages() -> [VisionType: UIImage] {
     self
-      .mapValues(UIImage.init(ciImage:))
+      .compactMapValues { ciImage in
+        UIGraphicsBeginImageContextWithOptions(ciImage.extent.size, true, 0)
+        UIImage(ciImage: ciImage).draw(in: ciImage.extent)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+      }
   }
 }
 
