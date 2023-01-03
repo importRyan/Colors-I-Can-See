@@ -10,12 +10,12 @@
       }
     },
     {
-      "identity" : "flowstacks",
+      "identity" : "swift-async-algorithms",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/johnpatrickmorgan/FlowStacks",
+      "location" : "https://github.com/apple/swift-async-algorithms",
       "state" : {
-        "revision" : "8d1bc577fcab0c09d599f1f2f6747db2d15f84f4",
-        "version" : "0.3.0"
+        "revision" : "cca423ff03ab657062f3781847e65a867b51bb01",
+        "version" : "0.0.3"
       }
     },
     {
@@ -77,17 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swiftui-navigation",
       "state" : {
-        "revision" : "a4a84e387c83a735e56d03bf9736d49a07b3c3ae",
-        "version" : "0.4.3"
-      }
-    },
-    {
-      "identity" : "tcacoordinators",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/johnpatrickmorgan/TCACoordinators",
-      "state" : {
-        "revision" : "b94764ca74de5acca169c1c1c458ddab5e43de45",
-        "version" : "0.3.0"
+        "revision" : "46acf5ecc1cabdb28d7fe03289f6c8b13a023f52",
+        "version" : "0.4.5"
       }
     },
     {

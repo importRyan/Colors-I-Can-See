@@ -1,6 +1,6 @@
 // Copyright 2022 by Ryan Ferrell. @importRyan
 
-import ColorVision
+import VisionType
 import SwiftUI
 
 public struct VisionFilterStateIcon: View {

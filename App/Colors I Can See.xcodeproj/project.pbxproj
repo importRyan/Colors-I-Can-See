@@ -18,6 +18,7 @@
 		940F2451293EAE2900B40C74 /* AppDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegates.swift; sourceTree = "<group>"; };
 		940F2453293EB0C300B40C74 /* Root.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Root.xctestplan; path = TestPlans/Root.xctestplan; sourceTree = "<group>"; };
 		9451581F293E5D7D005B9D44 /* Colors-I-Can-See-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Colors-I-Can-See-Info.plist"; sourceTree = SOURCE_ROOT; };
+		94A6A89B2962D8CE00E9EF35 /* ColorsFoundation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ColorsFoundation; path = ../ColorsFoundation; sourceTree = "<group>"; };
 		94CFB45B29469ABE00EDAE7B /* ColorVision */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ColorVision; path = ../ColorVision; sourceTree = "<group>"; };
 		94DC759A28D51DAD00F421B5 /* Colors I Can See.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Colors I Can See.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94DC759D28D51DAD00F421B5 /* MultiplatformApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplatformApp.swift; sourceTree = "<group>"; };
@@ -45,8 +46,9 @@
 			isa = PBXGroup;
 			children = (
 				940F2453293EB0C300B40C74 /* Root.xctestplan */,
-				94DC75AC28D5236A00F421B5 /* ColorsUI */,
 				94CFB45B29469ABE00EDAE7B /* ColorVision */,
+				94A6A89B2962D8CE00E9EF35 /* ColorsFoundation */,
+				94DC75AC28D5236A00F421B5 /* ColorsUI */,
 				94E2A682294910C600D02046 /* Clients */,
 				94DC75AD28D5248A00F421B5 /* Features */,
 				94DC759C28D51DAD00F421B5 /* Colors I Can See */,
@@ -306,6 +308,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Colors I Can See/Preview Content\"";
 				DEVELOPMENT_TEAM = FVC2SFVFYG;
 				ENABLE_HARDENED_RUNTIME = YES;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Colors-I-Can-See-Info.plist";
@@ -356,6 +359,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Colors I Can See/Preview Content\"";
 				DEVELOPMENT_TEAM = FVC2SFVFYG;
 				ENABLE_HARDENED_RUNTIME = YES;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Colors-I-Can-See-Info.plist";

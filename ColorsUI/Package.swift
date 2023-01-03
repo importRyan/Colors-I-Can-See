@@ -14,10 +14,7 @@ let package = Package(
     .watchOS(.v9),
   ],
   products: [
-    .library(
-      name: packageName,
-      targets: [packageName]
-    ),
+    .library(name: packageName, targets: [packageName]),
   ],
   dependencies: [
     .package(path: "../ColorVision"),
@@ -27,11 +24,16 @@ let package = Package(
     .target(
       name: packageName,
       dependencies: [
-        .byName(name: "ColorVision"),
+        .product(name: "CPUColorVisionSimulation", package: "ColorVision"),
         .product(name: "OrderedCollections", package: "swift-collections")
       ],
       path: "Sources",
       resources: [.process("Resources")]
-    )
+    ),
+    .testTarget(
+      name: "\(packageName)Tests",
+      dependencies: [.byName(name: packageName)],
+      path: "Tests"
+    ),
   ]
 )

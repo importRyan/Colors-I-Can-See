@@ -33,6 +33,7 @@ public struct OneLinePicker<T: Hashable & Identifiable>: View {
         .lineLimit(1)
         .fixedSize(horizontal: false, vertical: true)
         .foregroundColor(selection == element ? .accentColor : .secondary)
+        .buttonStyle(.borderless)
       }
       .font(.subheadline)
     }

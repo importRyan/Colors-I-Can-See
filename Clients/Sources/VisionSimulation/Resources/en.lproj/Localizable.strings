@@ -1,0 +1,2 @@
+"InitializationError.gpuUnavailable" = "Could not connect to your GPU.";
+"InitializationError.gpuCommandsUnavailable" = "Could not enqueue commands to your GPU.";
