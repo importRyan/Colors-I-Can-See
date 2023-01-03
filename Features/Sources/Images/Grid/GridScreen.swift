@@ -23,6 +23,19 @@ extension ImageGrid {
           )
         }
         .navigationTitle("Images")
+        .toolbar {
+          ToolbarItem(placement: .primaryAction) {
+            if case .workingOn = viewStore.render {
+              ProgressView()
+                .controlSize(.small)
+            } else {
+              CButton(
+                action: { viewStore.send(.pressedImportImage) },
+                label: "+"
+              )
+            }
+          }
+        }
         .fileImporter(
           isPresented: viewStore.binding(\.$showFileImporter),
           allowedContentTypes: [.image],

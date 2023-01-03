@@ -41,9 +41,15 @@ public struct ImagesCoordinator: ReducerProtocol {
     BindingReducer()
     Reduce { state, action in
       switch action {
-      case .comparison: return .none
-      case .grid: return .none
-      case .binding: return .none
+      case let .grid(.forParent(.didImportNew(render))):
+        return .none
+
+      case .comparison:
+        return .none
+      case .grid:
+        return .none
+      case .binding:
+        return .none
       }
     }
   }
@@ -74,9 +80,12 @@ extension ImagesCoordinator {
 
     public var body: some View {
       NavigationStack {
-        ImageComparison.Screen(
-          store: store.scope(state: \.comparison, action: Action.comparison)
+        ImageGrid.Screen(
+          store: store.scope(state: \.grid, action: Action.grid)
         )
+//        ImageComparison.Screen(
+//          store: store.scope(state: \.comparison, action: Action.comparison)
+//        )
       }
       .navigationDestination(for: ImageGrid.State.self) { _ in
         #warning("Implement non TCAC iOS 16 coordinator")
