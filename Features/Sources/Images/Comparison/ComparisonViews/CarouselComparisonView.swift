@@ -11,16 +11,17 @@ struct CarouselComparisonView: View {
   var body: some View {
     TabView(selection: $vision) {
       ForEach(VisionType.allCases) { vision in
-        if let image = renders[vision]?.image {
-          image
+        if let render = renders[vision] {
+          render.image
             .resizable()
-            .scaledToFit()
+            .scaledToFill()
             .tag(vision)
+            .tabItem { Text(vision.localizedInfo.shortName) }
         }
       }
     }
 #if os(iOS)
-    .tabViewStyle(.page)
+    .tabViewStyle(.page(indexDisplayMode: .always))
 #endif
   }
 }

@@ -20,8 +20,8 @@ let package = Package(
     .package(path: "../ColorVision"),
     .package(path: "../Clients"),
     .package(
-      url: "https://github.com/johnpatrickmorgan/TCACoordinators",
-      from: .init(0, 3, 0)
+      url: "https://github.com/pointfreeco/swiftui-navigation",
+      from: .init(0, 4, 5)
     ),
   ],
   targets: [
@@ -30,7 +30,6 @@ let package = Package(
       .Internal.ColorsUI,
       .Internal.Foundation,
       .External.ComposableArchitecture,
-      .External.TCACoordinators,
       "Onboarding",
       "Tabs",
     ]),
@@ -39,7 +38,7 @@ let package = Package(
       .Internal.ColorsUI,
       .Internal.Foundation,
       .External.ComposableArchitecture,
-      .External.TCACoordinators,
+      .External.SwiftUINavigation,
     ]),
     .target(
       name: "Camera",
@@ -59,7 +58,6 @@ let package = Package(
       dependencies: [
         .Internal.ColorsUI,
         .External.ComposableArchitecture,
-        .External.TCACoordinators,
       ],
       resources: [.process("Resources")]
     ),
@@ -71,7 +69,6 @@ let package = Package(
       dependencies: [
         .Internal.ColorsUI,
         .External.ComposableArchitecture,
-        .External.TCACoordinators,
       ],
       resources: [.process("Resources")]
     ),
@@ -109,7 +106,7 @@ extension Target.Dependency {
   struct External {
     static let ComposableArchitecture = Target.Dependency
       .product(name: "TCA", package: "Clients")
-    static let TCACoordinators = Target.Dependency
-      .product(name: "TCACoordinators", package: "TCACoordinators")
+    static let SwiftUINavigation = Target.Dependency
+      .product(name: "SwiftUINavigation", package: "swiftui-navigation")
   }
 }

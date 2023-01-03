@@ -4,23 +4,21 @@ import ColorsUI
 import TCA
 import VisionSimulation
 import VisionType
+import SwiftUINavigation
 
 public struct ImagesCoordinator: ReducerProtocol {
 
   public init() {}
 
   public struct State: Equatable, Hashable {
-    @BindableState public var focusedImage: Int?
+    @BindableState public var destination: Destination?
     public var grid: ImageGrid.State
-    public var comparison: ImageComparison.State
 
     public init(
-      focusedImage: Int? = nil,
-      comparison: ImageComparison.State = .init(renders: [:]),
+      destination: Destination? = .none,
       grid: ImageGrid.State = .init()
     ) {
-      self.focusedImage = focusedImage
-      self.comparison = comparison
+      self.destination = destination
       self.grid = grid
     }
   }
@@ -29,6 +27,10 @@ public struct ImagesCoordinator: ReducerProtocol {
     case grid(ImageGrid.Action)
     case comparison(ImageComparison.Action)
     case binding(BindingAction<State>)
+  }
+
+  public enum Destination: Equatable, Hashable {
+    case comparison(ImageComparison.State)
   }
 
   public var body: some ReducerProtocol<State, Action> {
@@ -42,8 +44,10 @@ public struct ImagesCoordinator: ReducerProtocol {
     Reduce { state, action in
       switch action {
       case let .grid(.forParent(.didImportNew(render))):
+        state.destination = .comparison(.init(render: render))
         return .none
-
+      case .comparison(.pressedImportImage):
+        return .none
       case .comparison:
         return .none
       case .grid:
@@ -61,11 +65,12 @@ public struct ImagesCoordinator: ReducerProtocol {
       action: /Action.grid,
       ImageGrid.init
     )
-    Scope(
-      state: \.comparison,
-      action: /Action.comparison,
-      ImageComparison.init
-    )
+    Scope(state: \.destination, action: /.self) {
+      EmptyReducer()
+        .ifCaseLet(/Destination.comparison, action: /Action.comparison) {
+          ImageComparison()
+        }
+    }
   }
 }
 
@@ -80,18 +85,30 @@ extension ImagesCoordinator {
 
     public var body: some View {
       NavigationStack {
-        ImageGrid.Screen(
-          store: store.scope(state: \.grid, action: Action.grid)
-        )
-//        ImageComparison.Screen(
-//          store: store.scope(state: \.comparison, action: Action.comparison)
-//        )
+        WithViewStore(
+          store
+        ) { viewStore in
+          ImageGrid.Screen(
+            store: store.scope(state: \.grid, action: Action.grid)
+          )
+          .navigationDestination(
+            unwrapping: viewStore.binding(\.$destination),
+            case: /Destination.comparison,
+            destination: comparisonDestination
+          )
+        }
       }
-      .navigationDestination(for: ImageGrid.State.self) { _ in
-        #warning("Implement non TCAC iOS 16 coordinator")
-        ImageGrid.Screen(
-          store: store.scope(state: \.grid, action: Action.grid)
-        )
+    }
+
+    func comparisonDestination(_ unused: Binding<ImageComparison.State>) -> some View {
+      IfLetStore(store.scope(state: \.destination)) { destinationStore in
+        SwitchStore(destinationStore) {
+          CaseLet(
+            state: /Destination.comparison,
+            action: Action.comparison,
+            then: ImageComparison.Screen.init
+          )
+        }
       }
     }
   }

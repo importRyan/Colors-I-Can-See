@@ -14,32 +14,36 @@ public struct ImageComparison: ReducerProtocol {
     @BindableState public var secondaryVision: VisionType
     @BindableState public var comparison: ComparisonStyle
     public var comparisonOptions: [ComparisonStyle]
-    public var renders: [VisionType: PlatformImage]
+    public var render: ImageRender
 
     public init(
       primaryVision: VisionType = .deutan,
       secondaryVision: VisionType = .typical,
       comparison: ComparisonStyle = .carousel,
       comparisonOptions: [ComparisonStyle] = ComparisonStyle.allCases,
-      renders: [VisionType: PlatformImage]
+      render: ImageRender
     ) {
       self.primaryVision = primaryVision
       self.secondaryVision = secondaryVision
       self.comparison = comparison
       self.comparisonOptions = comparisonOptions
-      self.renders = renders
+      self.render = render
     }
   }
 
   public enum Action: Equatable, BindableAction {
     case onAppear
+    case pressedImportImage
     case binding(BindingAction<State>)
   }
 
   public var body: some ReducerProtocol<State, Action> {
+    BindingReducer()
     Reduce { state, action in
       switch action {
       case .onAppear:
+        return .none
+      case .pressedImportImage:
         return .none
       case .binding:
         return .none
