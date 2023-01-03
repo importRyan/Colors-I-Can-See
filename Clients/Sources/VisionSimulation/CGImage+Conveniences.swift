@@ -1,6 +1,5 @@
 // Copyright © 2023 by Ryan Ferrell. GitHub: importRyan
 
-import ColorsUI
 import VisionType
 
 #if os(macOS)
@@ -56,10 +55,14 @@ extension [VisionType: CIImage] {
       }
   }
 }
-
 extension CGImage {
   public static func `from`(fileURL: URL) throws -> CGImage {
+    guard fileURL.startAccessingSecurityScopedResource() else {
+      throw CocoaError(.fileReadNoPermission)
+    }
     let data = try Data(contentsOf: fileURL)
+    fileURL.stopAccessingSecurityScopedResource()
+
     guard let imageFromFile = UIImage(data: data) else {
       throw CocoaError(.fileReadUnsupportedScheme)
     }
